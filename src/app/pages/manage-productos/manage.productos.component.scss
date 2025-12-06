@@ -1,0 +1,285 @@
+/* src/app/pages/manage-productos/manage-productos.component.scss */
+
+:host {
+    display: block;
+    max-width: 1100px; /* Un poco más ancho para acomodar las nuevas columnas */
+    margin: 0 auto;
+    animation: fadeIn 0.4s ease-out;
+  }
+  
+  h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--text-dark);
+  }
+  
+  h3 {
+    color: var(--text-dark);
+    border-left: 5px solid var(--primary-color);
+    padding-left: 15px;
+    margin: 2rem 0 1rem;
+  }
+  
+  /* --- TARJETA DEL FORMULARIO --- */
+  .card {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    border: 1px solid #f0f0f0;
+  
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+  
+      /* Campos que ocupan todo el ancho */
+      div:nth-child(1), /* Nombre */
+      div:nth-child(2), /* Descripción */
+      div:nth-child(4), /* Imagen */
+      .checkbox-group,  /* Grupo de checkboxes */
+      .botones-container { /* Contenedor de botones */
+        grid-column: span 2; 
+      }
+  
+      label {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+        display: block;
+      }
+      
+      /* Estilos para inputs y selects */
+      input:not([type="checkbox"]), select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        
+        &:focus {
+          border-color: var(--primary-color);
+          outline: none;
+        }
+      }
+    }
+  }
+  
+  /* GRUPO DE CHECKBOXES */
+  .checkbox-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    background-color: #fafafa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    margin-top: 10px;
+  
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      
+      input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--primary-color);
+        cursor: pointer;
+        margin: 0;
+      }
+      
+      label {
+        margin: 0;
+        cursor: pointer;
+        font-weight: 500;
+        color: #555;
+      }
+      
+      &:hover label {
+        color: var(--primary-color);
+      }
+    }
+  }
+  
+  /* BOTONES DEL FORMULARIO */
+  .botones-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    
+    button {
+      flex: 1; /* Que ocupen el mismo ancho */
+    }
+  }
+  
+  /* --- TABLA DE PRODUCTOS --- */
+  .table-container {
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  
+    thead {
+      background-color: #fafafa;
+      border-bottom: 2px solid #eee;
+      
+      th {
+        padding: 1rem;
+        font-weight: 600;
+        color: var(--text-gray);
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+      }
+    }
+  
+    tbody tr {
+      border-bottom: 1px solid #f5f5f5;
+      &:last-child { border-bottom: none; }
+      &:hover { background-color: #fff5f7; }
+  
+      td {
+        padding: 0.8rem 1rem;
+        vertical-align: middle;
+        color: var(--text-dark);
+      }
+    }
+  }
+  
+  /* IMAGEN EN TABLA */
+  .img-col {
+    width: 80px;
+    text-align: center;
+    
+    .prod-thumb {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid #eee;
+      background-color: #f9f9f9;
+    }
+  }
+  
+  /* DETALLES */
+  .prod-name {
+    font-weight: 600;
+    font-size: 1rem;
+    display: block;
+  }
+  
+  .prod-desc {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    display: block;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .prod-price {
+    font-weight: 700;
+    color: var(--success-color);
+  }
+  
+  /* ESTADOS Y BADGES */
+  .estado-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  
+  .badge-destacado {
+    background-color: #fff8e1;
+    color: #f39c12;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border: 1px solid #fcebb6;
+    display: inline-block;
+  }
+  
+  /* BOTONES TOGGLE (Happy Hour / Descuento) */
+  button {
+    &.btn-toggle {
+      border: none;
+      padding: 4px 10px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      text-align: left;
+      width: fit-content;
+      
+      /* Estados (colores por defecto, se pueden sobrescribir en HTML con style) */
+      &:hover {
+        opacity: 0.9;
+        transform: scale(1.05);
+      }
+    }
+  }
+  
+  /* ACCIONES */
+  .acciones-col {
+    display: flex;
+    align-items: center;
+  }
+  
+  .btn-edit {
+    background-color: #f39c12;
+    color: white;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    border: none;
+    margin-right: 20px !important;
+    cursor: pointer;
+    
+    &:hover { background-color: #d35400; }
+  }
+  
+  .btn-delete {
+    background-color: #e74c3c;
+    color: white;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    
+    &:hover { background-color: #c0392b; }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .card form {
+      grid-template-columns: 1fr;
+      
+      div:nth-child(n), .checkbox-group, .botones-container { 
+        grid-column: span 1; 
+      }
+    }
+    
+    /* Ocultar descripción en móvil si ocupa mucho */
+    .prod-desc { display: none; }
+  }

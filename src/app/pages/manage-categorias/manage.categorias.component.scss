@@ -1,0 +1,186 @@
+/* src/app/pages/manage-categorias/manage-categorias.component.scss */
+
+:host {
+    display: block;
+    max-width: 800px;
+    margin: 0 auto;
+    animation: fadeIn 0.4s ease-out;
+  }
+  
+  h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--text-dark);
+  }
+  
+  h3 {
+    color: var(--text-dark);
+    border-left: 5px solid var(--primary-color);
+    padding-left: 15px;
+    margin: 2rem 0 1.5rem;
+    font-size: 1.3rem;
+  }
+  
+  /* TARJETA DE FORMULARIO */
+  .form-card {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    border: 1px solid #f0f0f0;
+    margin-bottom: 3rem;
+  
+    form {
+      display: flex;
+      gap: 20px;
+      align-items: flex-end; 
+  
+      .form-group {
+        flex-grow: 1;
+      }
+  
+      .form-actions {
+        display: flex;
+        gap: 10px;
+        /* Ajuste para alinear verticalmente con el input */
+        padding-bottom: 2px; 
+      }
+  
+      label {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+        display: block;
+      }
+  
+      input {
+        margin-bottom: 0;
+      }
+  
+      button {
+        white-space: nowrap;
+        height: 48px; /* Altura fija para igualar al input */
+        padding: 0 24px;
+      }
+  
+      .btn-cancel {
+        background-color: #95a5a6;
+        &:hover { background-color: #7f8c8d; }
+      }
+    }
+    
+    .error-msg {
+      margin-top: 5px;
+      color: #e74c3c;
+      font-size: 0.85rem;
+    }
+  }
+  
+  /* LISTA DE CATEGORÍAS */
+  .category-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 15px;
+  }
+  
+  li {
+    background: var(--card-bg);
+    padding: 1.2rem 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+  
+    &:hover {
+      transform: translateX(5px);
+      border-left: 4px solid var(--primary-color);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+  
+    .cat-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--text-dark);
+    }
+  
+    .cat-actions {
+      display: flex;
+      align-items: center;
+      /* Usamos margin-left en el btn-edit para separar si no usas gap */
+    }
+  }
+  
+  /* BOTONES DE ACCIÓN EN LISTA */
+  .btn-edit {
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 15px; /* Espacio entre editar y borrar */
+    transition: background-color 0.2s;
+  
+    &:hover { background-color: #d35400; }
+  }
+  
+  .btn-delete {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    
+    &:hover { background-color: #c0392b; }
+  }
+  
+  .empty-state {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--text-gray);
+    font-size: 1.1rem;
+    padding: 40px;
+    background: #fafafa;
+    border-radius: var(--radius-md);
+    border: 2px dashed #e0e0e0;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .form-card form {
+      flex-direction: column;
+      align-items: stretch;
+  
+      .form-actions {
+        flex-direction: column;
+        
+        button { width: 100%; margin-top: 10px; }
+      }
+    }
+    
+    li {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+  
+      .cat-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+  }

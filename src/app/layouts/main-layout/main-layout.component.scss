@@ -1,0 +1,135 @@
+// Variables de color
+$primary-color: #EA004B; /* Rojo Menuvo */
+$text-color-light: #ecf0f1;
+$danger-color: #e74c3c;
+
+.navbar {
+  background-color: #333; /* Fondo oscuro para la barra */
+  padding: 0.8rem 2rem;   /* Un poco más compacto */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  /* --- ESTILOS DEL LOGO Y MARCA --- */
+  .nav-brand a {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espacio entre logo y texto */
+    transition: opacity 0.2s;
+    
+    &:hover { opacity: 0.9; }
+
+    /* Imagen del Logo */
+    .nav-logo {
+      height: 45px; /* Altura controlada */
+      width: auto;
+      object-fit: contain;
+      /* Sombra suave para que resalte sobre el fondo oscuro si el logo tiene transparencia */
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); 
+    }
+  }
+
+  /* --- ENLACES DE NAVEGACIÓN --- */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    a {
+      color: $text-color-light;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+
+      &:hover {
+        color: $primary-color;
+      }
+
+      &.active {
+        color: $primary-color;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+/* BOTÓN 'SOY DUEÑO' (Estilo destacado) */
+.btn-login-nav {
+  background-color: white;
+  color: $primary-color !important;
+  border: 2px solid white;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: $primary-color;
+    color: white !important;
+    border-color: $primary-color;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(234, 0, 75, 0.3);
+  }
+}
+
+/* BOTÓN SALIR */
+.logout-btn {
+  background-color: transparent;
+  color: #aaa;
+  border: 1px solid #555;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  margin-left: 10px;
+
+  &:hover {
+    background-color: $danger-color;
+    border-color: $danger-color;
+    color: white;
+  }
+}
+
+/* CONTENIDO PRINCIPAL */
+.layout-content {
+  min-height: 85vh;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* FOOTER */
+.footer {
+  background-color: #222;
+  color: #666;
+  text-align: center;
+  padding: 30px;
+  margin-top: auto;
+  font-size: 0.85rem;
+  border-top: 1px solid #333;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 15px;
+  }
+  
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+}

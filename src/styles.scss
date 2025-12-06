@@ -1,1 +1,94 @@
-/* You can add global styles to this file, and also import other style files */
+/* IMPORTAMOS FUENTE MODERNA (Poppins) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* VARIABLES DE DISEÑO (Estilo Delivery App) */
+:root {
+  --primary-color: #EA004B;      /* Rojo vibrante */
+  --primary-hover: #C90040;      /* Rojo oscuro para hover */
+  --bg-color: #F5F5F8;           /* Fondo gris muy suave */
+  --card-bg: #FFFFFF;            /* Blanco puro */
+  --text-dark: #2D3142;          /* Texto casi negro */
+  --text-gray: #9FA2B4;          /* Texto secundario */
+  --success-color: #00A650;      /* Verde */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-card: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* RESET BÁSICO */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+/* ESTILOS GLOBALES PARA FORMULARIOS (Login, Register, Admin) */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #E0E0E0;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: var(--card-bg);
+  margin-bottom: 10px;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(234, 0, 75, 0.1);
+  }
+}
+
+/* BOTONES GLOBALES */
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: var(--primary-hover);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    background-color: var(--text-gray);
+    cursor: not-allowed;
+  }
+}
+
+/* TÍTULOS */
+h1, h2, h3 {
+  color: var(--text-dark);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  &:hover { text-decoration: underline; }
+}

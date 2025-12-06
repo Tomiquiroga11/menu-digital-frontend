@@ -1,0 +1,35 @@
+<nav class="navbar">
+    <div class="nav-brand">
+      <a routerLink="/">
+        <img src="https://sp.deevid.ai/storage/v1/object/public/user-image/watermarked-b5c71fbc-508f-4922-a6b3-63550ec46a2b.png" 
+             alt="Logo Menuvo" 
+             class="nav-logo">
+        
+        <span>Menuvo</span>
+      </a>
+    </div>
+  
+    <div class="nav-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+  
+      <ng-container *ngIf="!authService.isLoggedIn()">
+        <a routerLink="/login" class="btn-login-nav">Soy Dueño (Ingresar)</a>
+      </ng-container>
+  
+      <ng-container *ngIf="authService.isLoggedIn()">
+        <a routerLink="/admin/manage-categorias" routerLinkActive="active">Categorías</a>
+        <a routerLink="/admin/manage-productos" routerLinkActive="active">Productos</a>
+        <a routerLink="/admin/cuenta" routerLinkActive="active">Mi Cuenta</a>
+        
+        <button (click)="onLogout()" class="logout-btn">Salir</button>
+      </ng-container>
+    </div>
+  </nav>
+  
+  <div class="layout-content">
+    <router-outlet></router-outlet>
+  </div>
+  
+  <footer class="footer">
+    <p>&copy; 2025 Menuvo - Trabajo Práctico Final</p>
+  </footer>

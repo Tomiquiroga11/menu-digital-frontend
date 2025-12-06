@@ -1,0 +1,45 @@
+<button class="cart-fab" (click)="toggleCart()">
+    🛒
+    <span class="badge" *ngIf="itemCount > 0">{{ itemCount }}</span>
+  </button>
+  
+  <div class="cart-overlay" *ngIf="isOpen" (click)="toggleCart()"></div>
+  
+  <div class="cart-panel" [class.open]="isOpen">
+    <div class="cart-header">
+      <h3>Tu Pedido</h3>
+      <button class="close-btn" (click)="toggleCart()">✕</button>
+    </div>
+  
+    <div class="cart-body">
+      <div *ngIf="items.length === 0" class="empty-msg">
+        Tu carrito está vacío.
+      </div>
+  
+      <div *ngFor="let item of items" class="cart-item">
+        <div class="item-info">
+          <span class="item-name">{{ item.producto.nombre }}</span>
+          <span class="item-price">${{ item.producto.precio }}</span>
+        </div>
+        
+        <div class="item-controls">
+          <button (click)="quitar(item)">-</button>
+          <span>{{ item.cantidad }}</span>
+          <button (click)="agregar(item)">+</button>
+        </div>
+        
+        <div class="item-subtotal">
+          ${{ item.subtotal }}
+        </div>
+      </div>
+    </div>
+  
+    <div class="cart-footer" *ngIf="items.length > 0">
+      <div class="total-row">
+        <span>Total:</span>
+        <span class="total-amount">${{ total }}</span>
+      </div>
+      <button class="checkout-btn" (click)="finalizarPedido()">Finalizar Pedido</button>
+      <button class="clear-btn" (click)="limpiar()">Vaciar</button>
+    </div>
+  </div>

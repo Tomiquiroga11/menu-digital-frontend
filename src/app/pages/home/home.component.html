@@ -1,0 +1,57 @@
+<div class="home-container">
+    
+    <section class="hero">
+        <h1>¡Bienvenido a Menú Digital!</h1>
+        <p>Explora los mejores menús de la ciudad desde tu celular.</p>
+        
+        <div class="search-container">
+            <input 
+                type="text" 
+                [(ngModel)]="searchTerm" 
+                placeholder="🔍 Buscar restaurante..."
+                class="search-input"
+            >
+        </div>
+
+        <div *ngIf="!isLoggedIn" style="margin-top: 20px;">
+            <a routerLink="/register" class="cta-button">¿Tienes un restaurante? Regístrate Gratis</a>
+        </div>
+    </section>
+
+    <hr style="margin: 40px 0; opacity: 0.1;">
+
+    <section class="restaurants-list">
+        <h2>Nuestros Restaurantes</h2>
+
+        <div *ngIf="cargando" class="loading">
+            <div class="spinner"></div>
+            <p>Buscando restaurantes cercanos...</p>
+        </div>
+
+        <div *ngIf="!cargando" class="grid">
+            <div *ngFor="let rest of restaurantes | restaurantFilter: searchTerm" 
+                 class="restaurant-card" 
+                 [routerLink]="['/menu', rest.id]">
+                
+                <div class="card-img-container">
+                     <img [src]="rest.imagenUrl || 'assets/placeholder-restaurant.jpg'" 
+                          alt="{{ rest.nombre }}"
+                          class="rest-img"
+                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                     
+                     <div class="fallback-icon" [style.display]="rest.imagenUrl ? 'none' : 'flex'">
+                        🍽️
+                     </div>
+                </div>
+
+                <h3>{{ rest.nombre }}</h3>
+                <span class="view-menu">Ver Menú &rarr;</span>
+            </div>
+        </div>
+
+        <div *ngIf="!cargando && (restaurantes | restaurantFilter: searchTerm).length === 0" class="empty">
+            <p>No encontramos restaurantes con ese nombre.</p>
+        </div>
+    </section>
+
+</div>

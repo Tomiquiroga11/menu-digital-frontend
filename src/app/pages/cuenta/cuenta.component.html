@@ -1,0 +1,116 @@
+<div class="dashboard-container">
+  
+  <header class="dashboard-header">
+    <h1>Mi Cuenta</h1>
+  </header>
+
+  <div *ngIf="cargando" class="loading-state">
+    <div class="spinner"></div>
+    <p>Cargando información...</p>
+  </div>
+
+  <div *ngIf="!cargando && reporte" class="dashboard-content">
+    
+    <div *ngIf="!isEditing" class="card profile-card">
+      
+      <div class="profile-icon-container">
+        <img *ngIf="reporte.imagenUrl" 
+             [src]="reporte.imagenUrl" 
+             alt="Logo Restaurante" 
+             class="profile-img"
+             (error)="reporte.imagenUrl = ''">
+        
+        <span *ngIf="!reporte.imagenUrl" class="fallback-icon">🏪</span>
+      </div>
+
+      <div class="profile-info">
+        <h2>{{ reporte.nombreRestaurante }}</h2>
+        <p class="email">{{ userEmail }}</p>
+        
+        <p class="telefono" style="color: #666; font-size: 0.95rem; margin-top: 5px; font-weight: 500;">
+            📱 WhatsApp Pedidos: <span style="color: #333;">{{ reporte.telefono }}</span>
+        </p>
+
+        <p class="horario" style="font-size: 0.9rem; color: #888; margin-top: 5px; display: flex; align-items: center; gap: 5px;">
+            🕒 Horario: 
+            <strong style="color: #333;">{{ reporte.horaApertura }}:00 - {{ reporte.horaCierre }}:00</strong>
+        </p>
+      </div>
+      
+      <div class="profile-actions">
+          <button (click)="startEdit()" class="btn-action edit">Editar Datos</button>
+      </div>
+    </div>
+
+    <div *ngIf="isEditing" class="card form-card">
+        <h3>Editar Mis Datos</h3>
+        <form [formGroup]="cuentaForm" (ngSubmit)="onUpdate()">
+            
+            <div class="form-group">
+                <label>Nombre del Restaurante:</label>
+                <input type="text" formControlName="nombre">
+            </div>
+            
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" formControlName="email">
+            </div>
+
+            <div class="form-group">
+                <label>Teléfono WhatsApp (sin +):</label>
+                <input type="text" formControlName="telefono" placeholder="Ej. 5491112345678">
+                <small style="color: #888; display: block; margin-top: 4px;">
+                    A este número llegarán los mensajes de los pedidos.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label>URL del Logo:</label>
+                <input type="text" formControlName="imagenUrl" placeholder="https://ejemplo.com/logo.jpg">
+            </div>
+
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Abre a las (0-23):</label>
+                    <input type="number" formControlName="horaApertura" min="0" max="23">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Cierra a las (0-23):</label>
+                    <input type="number" formControlName="horaCierre" min="0" max="23">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña:</label>
+                <input type="password" formControlName="password" placeholder="Nueva contraseña (o confirma la actual)">
+                <small style="color: #666;">Requerido para guardar cambios.</small>
+            </div>
+
+            <div class="botones-container">
+                <button type="submit" [disabled]="cuentaForm.invalid">Guardar Cambios</button>
+                <button type="button" (click)="cancelEdit()" class="btn-cancel">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="stats-grid">
+      <div class="card stat-card visitas">
+        <div class="stat-icon">👀</div>
+        <div class="stat-data">
+          <h3>Visitas al Menú</h3>
+          <p class="number">{{ reporte.totalVisitas }}</p>
+          <small>Total histórico</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="danger-zone">
+      <h3>Zona de Peligro</h3>
+      <p>Una vez que elimines tu cuenta, no hay vuelta atrás.</p>
+      <button (click)="onDeleteAccount()" class="btn-delete-account">
+        Eliminar mi Cuenta
+      </button>
+    </div>
+
+  </div>
+</div>

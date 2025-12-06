@@ -1,0 +1,95 @@
+<div *ngIf="cargando" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando menú...</p>
+</div>
+
+<div *ngIf="!cargando && menu" class="menu-container">
+
+    <header class="menu-header">
+        <h1>{{ menu.nombreRestaurante }}</h1>
+        <p class="subtitle">Carta Digital</p>
+        
+        <div class="search-bar">
+            <input 
+                type="text" 
+                [(ngModel)]="searchTerm" 
+                placeholder="🔍 ¿Qué se te antoja hoy?..."
+            >
+        </div>
+    </header>
+
+    <div *ngFor="let categoria of menu.categorias" class="categoria-section">
+
+        <div *ngIf="(categoria.productos | filter: searchTerm).length > 0">
+            
+            <h2 class="cat-title">{{ categoria.nombre }}</h2>
+
+            <div class="productos-grid">
+                
+                <div *ngFor="let producto of categoria.productos | filter: searchTerm" class="producto-card">
+                    
+                    <div class="card-image">
+                        <img [src]="producto.imagenUrl || 'assets/placeholder-food.jpg'" 
+                             alt="{{ producto.nombre }}"
+                             class="prod-img"
+                             onerror="this.src='https://placehold.co/400x300?text=Sin+Imagen'">
+                             
+                        <span *ngIf="producto.estaDestacado" class="badge-overlay">
+                            ⭐ Destacado
+                        </span>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="info-block">
+                            <h3>{{ producto.nombre }}</h3>
+                            <p class="descripcion">{{ producto.descripcion }}</p>
+                        </div>
+                        
+                        <div class="card-footer">
+                            
+                            <div class="pricing-row">
+                                <div class="prices">
+                                    <span *ngIf="producto.precioOriginal" class="precio-tachado">
+                                        ${{ producto.precioOriginal }}
+                                    </span>
+                                    <span class="precio-final" [class.oferta]="producto.precioOriginal">
+                                        ${{ producto.precio }}
+                                    </span>
+                                </div>
+
+                                <div class="promos">
+                                    <span *ngIf="producto.enHappyHourAhora" class="badge happy-hour">
+                                        🔥 HH 50%
+                                    </span>
+                                    <span *ngIf="producto.tieneDescuento && !producto.enHappyHourAhora" class="badge descuento">
+                                        -{{ producto.porcentajeDescuento }}%
+                                    </span>
+                                </div>
+                            </div>
+
+                            <button (click)="agregarAlCarrito(producto)" class="btn-add">
+                                Agregar +
+                            </button>
+                        </div>
+                    </div>
+
+                </div> </div> </div> 
+    </div>
+
+    <div *ngIf="!hasSearchResults()" class="empty-search">
+        <p>No encontramos productos para "{{ searchTerm }}".</p>
+        <button (click)="searchTerm = ''" class="btn-clear">Ver todo</button>
+    </div>
+
+</div>
+
+<div *ngIf="!cargando && !menu" class="error-container">
+    <h3>¡Ups!</h3>
+    <p>No pudimos cargar el menú de este restaurante.</p>
+    <a routerLink="/" class="btn-home">Volver al inicio</a>
+</div>
+
+<app-carrito-float *ngIf="menu"
+    [nombreRestaurante]="menu.nombreRestaurante"
+    [restauranteId]="menu.idRestaurante"> 
+</app-carrito-float>
