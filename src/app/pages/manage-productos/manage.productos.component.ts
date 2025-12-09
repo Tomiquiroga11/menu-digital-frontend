@@ -1,141 +1,145 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ProductoService } from '../../services/producto.service';
-import { CategoriaService } from '../../services/categoria.service';
-import { CategoriaDto, ProductoDto } from '../../models/menu.model';
+import { FormsModule } from '@angular/forms'; 
+import { RouterLink } from '@angular/router';
+import { MenuService } from '../../services/menu.service';
+import { AuthService } from '../../services/auth.service';
+import { ReporteService } from '../../services/reporte.service'; 
+import { RestauranteService } from '../../services/restaurante.service'; 
+import { ProductoDto, ProductoDescuentoDto, ProductoHappyHourDto } from '../../models/menu.model';
+import { ReporteVisitas } from '../../models/restaurante.model';
 
 @Component({
   selector: 'app-manage-productos',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, RouterLink], 
   templateUrl: './manage.productos.component.html',
   styleUrl: './manage.productos.component.scss'
 })
 export class ManageProductosComponent implements OnInit {
 
-  categorias: CategoriaDto[] = []; 
-  productos: ProductoDto[] = []; 
-  productoForm: FormGroup;
-  isEditing: boolean = false;
-  currentProductId: number | null = null;
+  productos: ProductoDto[] = [];
+  cargando: boolean = true;
+  idRestaurante: number = 0;
+
+  mostrarConfigHH: boolean = false;
+  hhInicio: number = 17; 
+  hhFin: number = 23;
+  
+  datosRestauranteFull: ReporteVisitas | null = null; 
 
   constructor(
-    private productoService: ProductoService,
-    private categoriaService: CategoriaService,
-    private fb: FormBuilder
-  ) {
-    this.productoForm = this.fb.group({
-      nombre: ['', Validators.required],
-      descripcion: [''],
-      precio: [0, [Validators.required, Validators.min(0.01)]],
-      imagenUrl: [''],
-      categoriaId: ['', Validators.required],
-      estaDestacado: [false],
-      tieneDescuento: [false],
-      porcentajeDescuento: [0, [Validators.min(0), Validators.max(100)]],
-      tieneHappyHour: [false]
-    });
-  }
-
-  // --- NUEVO: Getter para calcular el precio en vivo en el formulario ---
-  get precioFinalCalculado(): number {
-    const precio = this.productoForm.get('precio')?.value || 0;
-    const tieneDesc = this.productoForm.get('tieneDescuento')?.value;
-    const porcentaje = this.productoForm.get('porcentajeDescuento')?.value || 0;
-
-    if (tieneDesc && porcentaje > 0) {
-      return precio - (precio * (porcentaje / 100));
-    }
-    return precio;
-  }
+    private menuService: MenuService,
+    private authService: AuthService,
+    private reporteService: ReporteService,
+    private restauranteService: RestauranteService
+  ) { }
 
   ngOnInit(): void {
-    this.loadCategorias();
-    this.loadProductos(); 
+    const idStr = this.authService.getRestauranteId();
+    if (idStr) {
+      this.idRestaurante = +idStr;
+      this.cargarProductos();
+      this.cargarConfiguracionRestaurante(); 
+    }
   }
 
-  loadCategorias(): void {
-    this.categoriaService.getMisCategorias().subscribe(data => this.categorias = data);
-  }
-
-  loadProductos(): void {
-     this.productoService.getMisProductos().subscribe(data => this.productos = data);
-  }
-
-  onEdit(prod: ProductoDto): void {
-    this.isEditing = true;
-    this.currentProductId = prod.id;
-
-    // --- CORRECCIÓN CLAVE: Cargar el precio original si tiene descuento ---
-    // Si 'precioOriginal' existe, ese es el precio real de base. 
-    // Si no, usamos 'precio' (que es el precio final).
-    const precioReal = prod.precioOriginal ? prod.precioOriginal : prod.precio;
-
-    this.productoForm.patchValue({
-      nombre: prod.nombre,
-      descripcion: prod.descripcion,
-      precio: precioReal, // Usamos el precio base
-      imagenUrl: prod.imagenUrl,
-      categoriaId: prod.categoriaId,
-      estaDestacado: prod.estaDestacado,
-      tieneDescuento: prod.tieneDescuento,
-      porcentajeDescuento: prod.porcentajeDescuento,
-      tieneHappyHour: prod.tieneHappyHour
+  cargarProductos() {
+    this.cargando = true;
+    this.menuService.getMisProductos(this.idRestaurante).subscribe({
+      next: (data) => {
+        this.productos = data;
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar productos', err);
+        this.cargando = false;
+      }
     });
+  }
+
+  cargarConfiguracionRestaurante() {
+    this.reporteService.getReporte().subscribe({
+        next: (data) => {
+            this.datosRestauranteFull = data;
+            if (data.happyHourInicio !== undefined) this.hhInicio = data.happyHourInicio;
+            if (data.happyHourFin !== undefined) this.hhFin = data.happyHourFin;
+        },
+        error: (err) => console.error('Error cargando config', err)
+    });
+  }
+
+  guardarHappyHour() {
+    const inicio = Number(this.hhInicio);
+    const fin = Number(this.hhFin);
+
+    if (isNaN(inicio) || isNaN(fin)) {
+        alert("Por favor ingresa números válidos.");
+        return;
+    }
+
+    if (inicio < 0 || inicio > 23 || fin < 0 || fin > 23) {
+        alert("Por favor ingresa horas válidas entre 0 y 23.");
+        return;
+    }
+
+    this.menuService.updateHappyHourHorario(this.idRestaurante, inicio, fin)
+      .subscribe({
+        next: () => {
+            alert('¡Horario Happy Hour actualizado con éxito! 🍹');
+            this.mostrarConfigHH = false;
+            this.cargarConfiguracionRestaurante();
+            this.cargarProductos(); 
+        },
+        error: (err) => {
+            console.error('Error detallado:', err);
+            alert('Error al guardar el horario. Verifica que el servidor esté funcionando.');
+        }
+    });
+  }
+  
+  onDelete(id: number) {
+    if(confirm('¿Seguro que deseas eliminar este producto?')) {
+      this.menuService.deleteProducto(this.idRestaurante, id).subscribe(() => this.cargarProductos());
+    }
+  }
+
+  toggleDescuento(producto: ProductoDto, event: any) {
+    const isChecked = event.target.checked;
+    producto.tieneDescuento = isChecked;
     
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  cancelEdit(): void {
-    this.isEditing = false;
-    this.currentProductId = null;
-    this.productoForm.reset({ 
-      precio: 0, 
-      estaDestacado: false, 
-      tieneDescuento: false, 
-      porcentajeDescuento: 0, 
-      tieneHappyHour: false 
-    });
-  }
-
-  onSubmit(): void {
-    if (this.productoForm.invalid) return;
-
-    if (this.isEditing && this.currentProductId) {
-      this.productoService.updateProducto(this.currentProductId, this.productoForm.value)
-        .subscribe(() => {
-          alert('Producto actualizado con éxito');
-          this.cancelEdit();
-          this.loadProductos();
-        });
-    } else {
-      this.productoService.createProducto(this.productoForm.value)
-        .subscribe(() => {
-          alert('Producto creado con éxito');
-          this.cancelEdit();
-          this.loadProductos();
-        });
+    if (isChecked && (!producto.porcentajeDescuento || producto.porcentajeDescuento === 0)) {
+        producto.porcentajeDescuento = 10; 
     }
+
+    const dto: ProductoDescuentoDto = {
+      tieneDescuento: isChecked,
+      porcentajeDescuento: producto.porcentajeDescuento
+    };
+    this.menuService.setDescuento(this.idRestaurante, producto.id, dto).subscribe();
   }
 
-  onDelete(id: number): void {
-    if (confirm('¿Borrar producto?')) {
-      this.productoService.deleteProducto(id).subscribe(() => this.loadProductos());
-    }
+  updatePorcentaje(producto: ProductoDto, valorInput: string) {
+    let val = Number(valorInput);
+    
+    if (val < 0) val = 0;
+    if (val > 100) val = 100;
+    
+    producto.porcentajeDescuento = val;
+    
+    if (val > 0) producto.tieneDescuento = true;
+    else if (val === 0) producto.tieneDescuento = false;
+
+    const dto: ProductoDescuentoDto = {
+       tieneDescuento: producto.tieneDescuento,
+       porcentajeDescuento: val
+    };
+    this.menuService.setDescuento(this.idRestaurante, producto.id, dto).subscribe();
   }
 
-  toggleHappyHour(prod: ProductoDto): void {
-    const nuevoEstado = !prod.tieneHappyHour;
-    this.productoService.setHappyHour(prod.id, nuevoEstado).subscribe(() => this.loadProductos());
-  }
-
-  toggleDescuento(prod: ProductoDto): void {
-    if (!prod.tieneDescuento) {
-      const input = prompt('Porcentaje:', '10');
-      if (input) this.productoService.setDescuento(prod.id, true, +input).subscribe(() => this.loadProductos());
-    } else {
-      if (confirm('¿Quitar descuento?')) this.productoService.setDescuento(prod.id, false, 0).subscribe(() => this.loadProductos());
-    }
+  toggleHappyHour(producto: ProductoDto, event: any) {
+    const checked = event.target.checked;
+    const dto: ProductoHappyHourDto = { tieneHappyHour: checked };
+    this.menuService.setHappyHour(this.idRestaurante, producto.id, dto).subscribe();
   }
 }

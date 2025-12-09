@@ -1,31 +1,66 @@
 export interface ProductoDto {
-    id: number;
-    nombre: string;
-    descripcion: string;
-    precio: number;
-    estaDestacado: boolean;
-    tieneDescuento: boolean;
-    porcentajeDescuento: number;
-    tieneHappyHour: boolean;
-    categoriaId: number;
-    imagenUrl?: string;
-    precioOriginal?: number;
-    enHappyHourAhora?: boolean;
-  }
+  id: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  precioOriginal?: number | null; 
+  imagenUrl?: string;
+  estaDestacado: boolean;
   
-  export interface CategoriaConProductosDto {
-    id: number;
-    nombre: string;
-    productos: ProductoDto[];
-  }
-  
-  export interface MenuCompletoDto {
-    idRestaurante: number;
-    nombreRestaurante: string;
-    categorias: CategoriaConProductosDto[];
-  }
+  tieneDescuento: boolean;
+  porcentajeDescuento: number;
+  tieneHappyHour: boolean;
+  enHappyHourAhora?: boolean; 
 
-  export interface CategoriaDto {
-    id: number;
-    nombre: string;
-  }
+  categoriaId: number;
+}
+
+export interface CategoriaDto {
+  id: number;
+  nombre: string;
+}
+
+export interface CategoriaConProductosDto extends CategoriaDto {
+  productos: ProductoDto[];
+}
+
+export interface MenuCompletoDto {
+  idRestaurante: number;
+  nombreRestaurante: string;
+  categorias: CategoriaConProductosDto[];
+}
+
+
+export interface ProductoCreateDto {
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  estaDestacado: boolean;
+  categoriaId: number;
+  imagenUrl: string;
+  tieneDescuento: boolean;
+  porcentajeDescuento: number;
+  tieneHappyHour: boolean;
+}
+
+export interface ProductoUpdateDto {
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  estaDestacado: boolean;
+  categoriaId: number;
+  imagenUrl: string;
+  tieneDescuento: boolean;
+  porcentajeDescuento: number;
+  tieneHappyHour: boolean;
+}
+
+
+export interface ProductoDescuentoDto {
+  tieneDescuento: boolean;
+  porcentajeDescuento: number;
+}
+
+export interface ProductoHappyHourDto {
+  tieneHappyHour: boolean;
+}

@@ -1,0 +1,196 @@
+:host {
+    display: block;
+    padding: 20px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+
+    h2 {
+        text-align: center;
+        color: #2c3e50;
+        margin-top: 0;
+        margin-bottom: 30px;
+        font-size: 1.8rem;
+        font-weight: 800;
+    }
+}
+
+.form-group {
+    margin-bottom: 20px;
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #555;
+        font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: #333;
+        background-color: #fff;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+
+        &::placeholder {
+            color: #aaa;
+        }
+
+        &:focus {
+            border-color: var(--primary-color, #EA004B);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(234, 0, 75, 0.1);
+        }
+    }
+
+    textarea {
+        min-height: 100px;
+        resize: vertical;
+        font-family: inherit;
+    }
+}
+
+.row {
+    display: flex;
+    gap: 20px;
+
+    .half {
+        flex: 1;
+    }
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 25px;
+    background-color: #fafafa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    margin: 25px 0;
+    flex-wrap: wrap;
+
+    .check-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        position: relative;
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary-color, #EA004B);
+            cursor: pointer;
+            margin: 0;
+        }
+
+        label {
+            margin: 0;
+            font-weight: 600;
+            color: #444;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        &:hover label {
+            color: var(--primary-color, #EA004B);
+        }
+    }
+}
+
+.actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+
+    button,
+    a {
+        flex: 1;
+        text-align: center;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-decoration: none;
+        font-size: 1rem;
+        cursor: pointer;
+        border: none;
+        transition: transform 0.1s, opacity 0.2s;
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+
+    .btn-save {
+        background-color: var(--primary-color, #EA004B);
+        color: white;
+        box-shadow: 0 4px 10px rgba(234, 0, 75, 0.2);
+
+        &:hover {
+            background-color: #d60044;
+        }
+
+        &:disabled {
+            background-color: #ffb3c6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+    }
+
+    .btn-cancel {
+        background-color: #f1f2f6;
+        color: #2f3542;
+
+        &:hover {
+            background-color: #dfe4ea;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .form-container {
+        padding: 20px;
+    }
+
+    .row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .checkbox-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,61 @@
+<div class="form-container">
+    <h2>{{ isEditMode ? 'Editar Producto' : 'Crear Nuevo Producto' }}</h2>
+    
+    <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+        
+        <div class="form-group">
+            <label>Nombre:</label>
+            <input type="text" formControlName="nombre" placeholder="Ej. Hamburguesa Doble">
+        </div>
+
+        <div class="form-group">
+            <label>Descripción:</label>
+            <textarea formControlName="descripcion" placeholder="Ingredientes..."></textarea>
+        </div>
+
+        <div class="row">
+            <div class="form-group half">
+                <label>Precio ($):</label>
+                <input type="number" formControlName="precio">
+            </div>
+
+            <div class="form-group half">
+                <label>Categoría:</label>
+                <select formControlName="categoriaId">
+                    <option value="" disabled selected>-- Elige una categoría --</option>
+                    <option *ngFor="let cat of categorias" [value]="cat.id">
+                        {{ cat.nombre }}
+                    </option>
+                </select>
+                
+                <small *ngIf="categorias.length === 0" style="color: #e74c3c; margin-top: 5px; display: block;">
+                    ⚠️ No tienes categorías creadas. Ve a "Categorías" primero.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>URL Imagen:</label>
+            <input type="text" formControlName="imagenUrl" placeholder="https://...">
+        </div>
+
+        <div class="checkbox-group">
+            <div class="check-item">
+                <input type="checkbox" formControlName="estaDestacado" id="dest">
+                <label for="dest">⭐ Destacado</label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" formControlName="tieneHappyHour" id="hh">
+                <label for="hh">🍺 Happy Hour</label>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="submit" [disabled]="productoForm.invalid || cargando" class="btn-save">
+                {{ cargando ? 'Guardando...' : 'Guardar Producto' }}
+            </button>
+            <a routerLink="/admin/manage-productos" class="btn-cancel">Cancelar</a>
+        </div>
+
+    </form>
+</div>

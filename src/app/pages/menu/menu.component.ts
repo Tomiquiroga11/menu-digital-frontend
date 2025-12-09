@@ -45,15 +45,12 @@ export class MenuComponent implements OnInit {
     }
   }
 
-  // --- SOLUCIÓN AL ERROR DE 'document' ---
-  // Este método calcula lógicamente si hay algún producto que coincida
   hasSearchResults(): boolean {
     if (!this.menu) return false;
-    if (!this.searchTerm) return true; // Si no hay búsqueda, hay resultados
+    if (!this.searchTerm) return true; 
 
     const term = this.searchTerm.toLowerCase();
 
-    // Buscamos si AL MENOS UNA categoría tiene AL MENOS UN producto que coincida
     return this.menu.categorias.some(categoria => 
       categoria.productos.some(prod => 
         prod.nombre.toLowerCase().includes(term) || 

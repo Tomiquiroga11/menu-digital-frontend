@@ -1,9 +1,5 @@
 import { Routes } from '@angular/router';
-
-// 1. Importa tu Layout
 import { MainLayoutComponent } from './layouts/main-layout/main.layout.component';
-
-// 2. Importa tus páginas (Componentes)
 import { HomeComponent } from './pages/home/home.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -12,30 +8,46 @@ import { ManageCategoriasComponent } from './pages/manage-categorias/manage.cate
 import { ManageProductosComponent } from './pages/manage-productos/manage.productos.component';
 import { CuentaComponent } from './pages/cuenta/cuenta.component';
 import { authGuard } from './guards/auth.guard';
+import { ProductoNuevoComponent } from './pages/producto-nuevo/producto.nuevo.component';
+import { CategoriaNuevaComponent } from './pages/categoria.nueva/categoria.nueva.component';
 
 export const routes: Routes = [
   
-  // --- RUTA PADRE (LAYOUT) ---
   {
     path: '', 
-    component: MainLayoutComponent, // Este componente tiene el <router-outlet> principal y el Navbar
+    component: MainLayoutComponent, 
     children: [
-      // Todas estas rutas se renderizarán DENTRO del MainLayoutComponent
       
-      { path: '', component: HomeComponent }, // Ruta raíz (Home)
+      { path: '', component: HomeComponent }, 
       
       { path: 'menu/:id', component: MenuComponent },
       
-      // Rutas protegidas de Admin
       { 
         path: 'admin/manage-categorias', 
         component: ManageCategoriasComponent,
         canActivate: [authGuard] 
       },
       { 
+        path: 'admin/categorias/nueva', 
+        component: CategoriaNuevaComponent 
+      },
+      { 
+        path: 'admin/categorias/editar/:id', 
+        component: CategoriaNuevaComponent 
+      },
+      { 
         path: 'admin/manage-productos', 
         component: ManageProductosComponent,
         canActivate: [authGuard] 
+      },
+      { 
+        path: 'admin/productos/nuevo', 
+        component: ProductoNuevoComponent 
+      },
+  
+      { 
+        path: 'admin/productos/editar/:id', 
+        component: ProductoNuevoComponent 
       },
       { 
         path: 'admin/cuenta', 
@@ -45,11 +57,8 @@ export const routes: Routes = [
     ]
   },
 
-  // --- RUTAS FUERA DEL LAYOUT (Sin Navbar) ---
-  // Estas páginas ocuparán toda la pantalla, sin el menú de navegación
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 
-  // --- COMODÍN (Siempre al final) ---
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

@@ -59,18 +59,13 @@ export class CarritoFloatComponent implements OnInit {
     this.carritoService.generarPedidoWhatsApp(this.restauranteId).subscribe({
       next: (res: RespuestaPedido) => {
         if (res.localAbierto && res.linkWhatsApp) {
-          // 1. Abrir WhatsApp en nueva pestaña
           window.open(res.linkWhatsApp, '_blank');
           
-          // 2. --- NUEVO: Vaciar el carrito automáticamente ---
           this.carritoService.clearCart();
           
-          // 3. --- NUEVO: Cerrar el panel del carrito ---
           this.isOpen = false; 
 
         } else {
-          // Si está cerrado, mostramos el mensaje y NO borramos el carrito
-          // para que el usuario pueda intentar más tarde.
           alert(res.mensaje);
         }
       },

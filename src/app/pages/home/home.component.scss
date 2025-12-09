@@ -1,9 +1,7 @@
-/* src/app/pages/home/home.component.scss */
-
 :host {
   display: block;
   min-height: 100vh;
-  background-color: #F8F9FA; /* Fondo gris muy suave para toda la página */
+  background-color: #F8F9FA; 
 }
 
 .home-container {
@@ -13,11 +11,10 @@
   animation: fadeIn 0.5s ease-out;
 }
 
-/* --- SECCIÓN HÉROE (Bienvenida + Buscador) --- */
 .hero {
   text-align: center;
   padding: 60px 20px;
-  background: linear-gradient(135deg, #ffffff 0%, #fff0f3 100%); /* Degradado sutil */
+  background: linear-gradient(135deg, #ffffff 0%, #fff0f3 100%); 
   border-radius: 24px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.03);
   margin-bottom: 40px;
@@ -39,40 +36,36 @@
   }
 }
 
-/* ESTILOS DEL BUSCADOR */
 .search-container {
   margin: 0 auto 30px;
   max-width: 600px;
-  position: relative; /* Para posicionar el ícono si quisieras */
+  position: relative; 
 
   .search-input {
     width: 100%;
     padding: 16px 25px;
     font-size: 1.1rem;
     border: 2px solid transparent;
-    border-radius: 50px; /* Forma de píldora */
+    border-radius: 50px; 
     background-color: white;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     transition: all 0.3s ease;
     color: #333;
 
-    /* Placeholder más suave */
     &::placeholder {
       color: #aaa;
       font-weight: 400;
     }
 
-    /* Efecto al escribir */
     &:focus {
       outline: none;
       border-color: var(--primary-color);
-      box-shadow: 0 4px 20px rgba(234, 0, 75, 0.15); /* Sombra roja suave */
+      box-shadow: 0 4px 20px rgba(234, 0, 75, 0.15); 
       transform: scale(1.01);
     }
   }
 }
 
-/* BOTÓN DE REGISTRO (CTA) */
 .cta-button {
   display: inline-block;
   background-color: #333;
@@ -92,7 +85,6 @@
   }
 }
 
-/* --- LISTA DE RESTAURANTES --- */
 .restaurants-list {
   h2 {
     font-size: 1.8rem;
@@ -110,7 +102,6 @@
   gap: 30px;
 }
 
-/* TARJETA DE RESTAURANTE */
 .restaurant-card {
   background: white;
   padding: 30px;
@@ -130,16 +121,14 @@
     border-color: rgba(234, 0, 75, 0.1);
     box-shadow: 0 15px 30px rgba(0,0,0,0.1);
     
-    /* Efecto zoom en la imagen */
     .rest-img { transform: scale(1.1); }
     
     .view-menu { 
       color: var(--primary-color); 
-      transform: translateX(5px); /* Flechita se mueve */
+      transform: translateX(5px); 
     }
   }
 
-  /* IMAGEN CIRCULAR */
   .card-img-container {
     width: 100px;
     height: 100px;
@@ -188,7 +177,6 @@
   }
 }
 
-/* ESTADOS (Carga y Vacío) */
 .loading, .empty {
   text-align: center;
   padding: 60px 20px;
@@ -209,7 +197,6 @@
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
   .hero {
     padding: 40px 20px;
@@ -219,10 +206,9 @@
   }
   
   .grid {
-    grid-template-columns: 1fr; /* Una columna en móviles */
+    grid-template-columns: 1fr; 
   }
   
-  /* Tarjeta Horizontal en Móvil */
   .restaurant-card {
     flex-direction: row;
     padding: 15px;

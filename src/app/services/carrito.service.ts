@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'; // <-- 1. IMPORTAR HTTPCLIENT
-import { BehaviorSubject, Observable } from 'rxjs'; // <-- 2. IMPORTAR OBSERVABLE
+import { HttpClient } from '@angular/common/http'; 
+import { BehaviorSubject, Observable } from 'rxjs'; 
 import { CartItem } from '../models/carrito.model';
 import { ProductoDto } from '../models/menu.model';
 import { SolicitudPedido, RespuestaPedido } from '../models/pedido.model';
@@ -11,13 +11,11 @@ import { SolicitudPedido, RespuestaPedido } from '../models/pedido.model';
 export class CarritoService {
 
   private cartKey = 'menu_digital_cart';
-  // Asegúrate de que este puerto sea el correcto de tu backend
   private apiUrl = 'http://localhost:5071/api/pedidos/whatsapp';
   
   private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
   cartItems$ = this.cartItemsSubject.asObservable();
 
-  // 3. INYECTAR HTTPCLIENT EN EL CONSTRUCTOR
   constructor(private http: HttpClient) {
     this.loadCart(); 
   }
@@ -30,7 +28,6 @@ export class CarritoService {
     const items = this.currentItems;
     const existingItem = items.find(item => item.producto.id === producto.id);
 
-    // Usamos el precio que ya viene (que puede ser el rebajado si el backend lo calculó)
     const precioFinal = producto.precio; 
 
     if (existingItem) {
@@ -86,7 +83,6 @@ export class CarritoService {
     }
   }
   
-  // --- MÉTODO PARA EL PEDIDO DE WHATSAPP ---
   generarPedidoWhatsApp(restauranteId: number): Observable<RespuestaPedido> {
     const solicitud: SolicitudPedido = {
       restauranteId: restauranteId,

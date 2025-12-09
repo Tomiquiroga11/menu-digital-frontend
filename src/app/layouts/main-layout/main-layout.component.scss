@@ -1,11 +1,10 @@
-// Variables de color
-$primary-color: #EA004B; /* Rojo Menuvo */
+$primary-color: #EA004B; 
 $text-color-light: #ecf0f1;
 $danger-color: #e74c3c;
 
 .navbar {
-  background-color: #333; /* Fondo oscuro para la barra */
-  padding: 0.8rem 2rem;   /* Un poco más compacto */
+  background-color: #333; 
+  padding: 0.8rem 2rem;  
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,7 +13,6 @@ $danger-color: #e74c3c;
   top: 0;
   z-index: 1000;
 
-  /* --- ESTILOS DEL LOGO Y MARCA --- */
   .nav-brand a {
     font-size: 1.5rem;
     font-weight: 700;
@@ -22,22 +20,19 @@ $danger-color: #e74c3c;
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 12px; /* Espacio entre logo y texto */
+    gap: 12px; 
     transition: opacity 0.2s;
     
     &:hover { opacity: 0.9; }
 
-    /* Imagen del Logo */
     .nav-logo {
-      height: 45px; /* Altura controlada */
+      height: 45px; 
       width: auto;
       object-fit: contain;
-      /* Sombra suave para que resalte sobre el fondo oscuro si el logo tiene transparencia */
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); 
     }
   }
 
-  /* --- ENLACES DE NAVEGACIÓN --- */
   .nav-links {
     display: flex;
     align-items: center;
@@ -62,7 +57,6 @@ $danger-color: #e74c3c;
   }
 }
 
-/* BOTÓN 'SOY DUEÑO' (Estilo destacado) */
 .btn-login-nav {
   background-color: white;
   color: $primary-color !important;
@@ -81,7 +75,6 @@ $danger-color: #e74c3c;
   }
 }
 
-/* BOTÓN SALIR */
 .logout-btn {
   background-color: transparent;
   color: #aaa;
@@ -100,7 +93,6 @@ $danger-color: #e74c3c;
   }
 }
 
-/* CONTENIDO PRINCIPAL */
 .layout-content {
   min-height: 85vh;
   padding: 20px;
@@ -108,7 +100,6 @@ $danger-color: #e74c3c;
   margin: 0 auto;
 }
 
-/* FOOTER */
 .footer {
   background-color: #222;
   color: #666;
@@ -119,7 +110,6 @@ $danger-color: #e74c3c;
   border-top: 1px solid #333;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;

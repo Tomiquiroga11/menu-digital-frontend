@@ -32,8 +32,11 @@
         </p>
 
         <p class="horario" style="font-size: 0.9rem; color: #888; margin-top: 5px; display: flex; align-items: center; gap: 5px;">
-            🕒 Horario: 
-            <strong style="color: #333;">{{ reporte.horaApertura }}:00 - {{ reporte.horaCierre }}:00</strong>
+            🕒 Horario Atención: <strong style="color: #333;">{{ reporte.horaApertura }}:00 - {{ reporte.horaCierre }}:00</strong>
+        </p>
+        
+        <p class="horario" style="font-size: 0.9rem; color: #8E44AD; margin-top: 5px; display: flex; align-items: center; gap: 5px;">
+            🔥 Happy Hour (50% OFF): <strong>{{ reporte.happyHourInicio }}:00 - {{ reporte.happyHourFin }}:00</strong>
         </p>
       </div>
       
@@ -44,6 +47,7 @@
 
     <div *ngIf="isEditing" class="card form-card">
         <h3>Editar Mis Datos</h3>
+        
         <form [formGroup]="cuentaForm" (ngSubmit)="onUpdate()">
             
             <div class="form-group">
@@ -59,14 +63,11 @@
             <div class="form-group">
                 <label>Teléfono WhatsApp (sin +):</label>
                 <input type="text" formControlName="telefono" placeholder="Ej. 5491112345678">
-                <small style="color: #888; display: block; margin-top: 4px;">
-                    A este número llegarán los mensajes de los pedidos.
-                </small>
             </div>
 
             <div class="form-group">
                 <label>URL del Logo:</label>
-                <input type="text" formControlName="imagenUrl" placeholder="https://ejemplo.com/logo.jpg">
+                <input type="text" formControlName="imagenUrl">
             </div>
 
             <div style="display: flex; gap: 20px; margin-bottom: 15px;">
@@ -77,6 +78,21 @@
                 <div class="form-group" style="flex: 1;">
                     <label>Cierra a las (0-23):</label>
                     <input type="number" formControlName="horaCierre" min="0" max="23">
+                </div>
+            </div>
+
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+            <h4 style="margin-bottom: 15px; color: #8E44AD;">Configuración Happy Hour (50% OFF)</h4>
+            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Define en qué horario se activará automáticamente el descuento para los productos marcados.</p>
+
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label style="color: #8E44AD;">Inicio HH (0-23):</label>
+                    <input type="number" formControlName="happyHourInicio" min="0" max="23" style="border-color: #e1bee7;">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label style="color: #8E44AD;">Fin HH (0-23):</label>
+                    <input type="number" formControlName="happyHourFin" min="0" max="23" style="border-color: #e1bee7;">
                 </div>
             </div>
 
@@ -91,17 +107,6 @@
                 <button type="button" (click)="cancelEdit()" class="btn-cancel">Cancelar</button>
             </div>
         </form>
-    </div>
-
-    <div class="stats-grid">
-      <div class="card stat-card visitas">
-        <div class="stat-icon">👀</div>
-        <div class="stat-data">
-          <h3>Visitas al Menú</h3>
-          <p class="number">{{ reporte.totalVisitas }}</p>
-          <small>Total histórico</small>
-        </div>
-      </div>
     </div>
 
     <div class="danger-zone">

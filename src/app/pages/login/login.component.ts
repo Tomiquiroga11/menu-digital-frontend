@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// Imports para Reactive Forms
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router'; // Añade RouterLink
+import { Router, RouterLink } from '@angular/router'; 
 import { AuthService } from '../../services/auth.service';
-// import { HttpClientModule } from '@angular/common/http'; <-- BORRA ESTA LÍNEA
 
 @Component({
   selector: 'app-login',

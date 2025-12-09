@@ -1,52 +1,50 @@
-<h2>Gestionar Mis Categorías</h2>
-
-<div class="form-card">
-  <h3>{{ isEditing ? 'Editar Categoría' : 'Crear Nueva Categoría' }}</h3>
-  
-  <form [formGroup]="categoriaForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="nombre">Nombre de la Categoría:</label>
-      <input id="nombre" type="text" formControlName="nombre" placeholder="Ej. Bebidas, Postres...">
-      
-      <div *ngIf="categoriaForm.get('nombre')?.invalid && categoriaForm.get('nombre')?.touched" class="error-msg">
-        <small>El nombre es requerido.</small>
-      </div>
-    </div>
-
-    <div class="form-actions">
-      <button type="submit" [disabled]="categoriaForm.invalid">
-        {{ isEditing ? 'Guardar Cambios' : 'Crear' }}
-      </button>
-
-      <button type="button" *ngIf="isEditing" (click)="cancelEdit()" class="btn-cancel">
-        Cancelar
-      </button>
-    </div>
-  </form>
-</div>
-
-<hr>
-
-<h3>Mis Categorías Existentes</h3>
-
-<div *ngIf="categorias.length === 0" class="empty-state">
-  <p>Aún no has creado ninguna categoría.</p>
-</div>
-
-<ul class="category-list" *ngIf="categorias.length > 0">
-  <li *ngFor="let cat of categorias">
-    <div class="cat-info">
-      <span class="cat-name">{{ cat.nombre }}</span>
-    </div>
+<div class="manage-container">
     
-    <div class="cat-actions">
-      <button (click)="onEdit(cat)" class="btn-edit">
-        Editar
-      </button>
+  <header class="manage-header">
+      <h1>Mis Categorías</h1>
+      <a routerLink="/admin/categorias/nueva" class="btn-new">
+          <span>+</span> Nueva Categoría
+      </a>
+  </header>
+
+  <div class="table-container">
       
-      <button (click)="onDelete(cat.id)" class="btn-delete">
-        Borrar
-      </button>
-    </div>
-  </li>
-</ul>
+      <table *ngIf="!cargando && categorias.length > 0">
+          <thead>
+              <tr>
+                  <th>Nombre</th>
+                  <th style="text-align: right;">Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let cat of categorias">
+                  <td>
+                      <strong class="cat-name">{{ cat.nombre }}</strong>
+                  </td>
+                  <td style="text-align: right;">
+                      <a [routerLink]="['/admin/categorias/editar', cat.id]" class="btn-edit">
+                          ✏️ Editar
+                      </a>
+
+                      <button (click)="onDelete(cat.id)" class="btn-delete" title="Eliminar Categoría">
+                          🗑️
+                      </button>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+
+      <div *ngIf="!cargando && categorias.length === 0" class="empty-state">
+          <div class="empty-icon">📂</div>
+          <h3>No tienes categorías aún</h3>
+          <p>Las categorías organizan tu menú (ej: Bebidas, Postres).</p>
+          <a routerLink="/admin/categorias/nueva" class="btn-empty-action">Crear mi primera categoría</a>
+      </div>
+
+      <div *ngIf="cargando" class="loading-state">
+          <div class="spinner"></div>
+          <p>Cargando...</p>
+      </div>
+
+  </div>
+</div>

@@ -20,7 +20,6 @@
     }
   }
   
-  /* TARJETA DE PERFIL */
   .profile-card {
     display: flex;
     align-items: center;
@@ -31,28 +30,25 @@
     border-radius: 16px;
     box-shadow: var(--shadow-card);
   
-    /* Contenedor circular para la imagen o el icono */
     .profile-icon-container {
       width: 100px;
       height: 100px;
-      min-width: 100px; /* Evita que se achique */
+      min-width: 100px; 
       background: white;
       border-radius: 50%;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      overflow: hidden; /* Recorta la imagen cuadrada en círculo */
+      overflow: hidden; 
       display: flex;
       align-items: center;
       justify-content: center;
       border: 3px solid white;
   
-      /* La imagen real */
       .profile-img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* Clave para que no se deforme */
+        object-fit: cover; 
       }
   
-      /* El icono por defecto (emoji) */
       .fallback-icon {
         font-size: 3.5rem;
         line-height: 1;
@@ -66,7 +62,6 @@
     }
   }
   
-  /* BOTONES */
   .btn-action {
     background-color: #333;
     color: white;
@@ -78,7 +73,6 @@
     &:hover { background-color: #000; }
   }
   
-  /* FORMULARIO EDICIÓN */
   .form-card {
     margin-bottom: 30px;
     background: white;
@@ -120,7 +114,6 @@
     }
   }
   
-  /* ESTADÍSTICAS */
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -156,7 +149,6 @@
     }
   }
   
-  /* ZONA DE PELIGRO */
   .danger-zone {
     margin-top: 50px;
     border-top: 1px solid #eee;
@@ -184,7 +176,6 @@
   
   @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   
-  /* RESPONSIVE */
   @media (max-width: 768px) {
     .profile-card {
       flex-direction: column;

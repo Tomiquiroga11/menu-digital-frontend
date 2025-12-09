@@ -30,7 +30,6 @@ export class RegisterComponent {
     }, { validators: this.passwordsMatchValidator });
   }
 
-  // Validador personalizado para comparar contraseñas
   passwordsMatchValidator(form: FormGroup) {
     const password = form.get('password')?.value;
     const confirm = form.get('confirmarPassword')?.value;
@@ -39,7 +38,7 @@ export class RegisterComponent {
 
   onSubmit(): void {
     console.log('Botón presionado. Estado del form:', this.registerForm.status);
-  console.log('Errores:', this.registerForm.errors); // Para ver si hay error de mismatch
+  console.log('Errores:', this.registerForm.errors); 
   
   if (this.registerForm.invalid) {
     console.log('El formulario es inválido, no se envía nada.');
@@ -60,7 +59,6 @@ export class RegisterComponent {
       },
       error: (err) => {
         console.error('Error en registro:', err);
-        // El backend devuelve un error 400 si el email ya existe
         if (err.status === 400 && err.error.message) {
             this.errorMessage = err.error.message;
         } else {

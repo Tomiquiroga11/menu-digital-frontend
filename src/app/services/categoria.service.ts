@@ -1,46 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-// Asegúrate de que esta ruta a tu modelo sea correcta
-import { CategoriaDto } from '../models/menu.model'; 
+import { CategoriaDto } from '../models/menu.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoriaService {
-  private apiUrl = 'http://localhost:5071/api/categorias';
 
-  // Inyecta HttpClient
+  private apiUrl = 'http://localhost:5071/api/menu'; 
+
   constructor(private http: HttpClient) { }
 
-  /**
-   * Llama a GET /api/categorias
-   * (Requiere token, pero el Interceptor se lo pone)
-   */
-  getMisCategorias(): Observable<CategoriaDto[]> {
-    return this.http.get<CategoriaDto[]>(this.apiUrl);
+  getMisCategorias(restauranteId: number): Observable<CategoriaDto[]> {
+    return this.http.get<CategoriaDto[]>(`${this.apiUrl}/${restauranteId}/categorias`);
   }
 
-  /**
-   * Llama a POST /api/categorias
-   */
-  createCategoria(nombre: string): Observable<CategoriaDto> {
-    // El DTO del backend es { "nombre": "..." }
-    return this.http.post<CategoriaDto>(this.apiUrl, { nombre });
+  getCategoriaById(id: number): Observable<CategoriaDto> {
+    return this.http.get<CategoriaDto>(`${this.apiUrl}/categorias/${id}`);
   }
 
-  /**
-   * Llama a DELETE /api/categorias/{id}
-   */
-  deleteCategoria(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  createCategoria(restauranteId: number, dto: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${restauranteId}/categorias`, dto);
   }
-  
-  /**
-   * Llama a PUT /api/categorias/{id}
-   */
-  updateCategoria(id: number, nombre: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, { nombre });
+
+  updateCategoria(restauranteId: number, categoriaId: number, dto: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${restauranteId}/categorias/${categoriaId}`, dto);
+  }
+
+  deleteCategoria(restauranteId: number, categoriaId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${restauranteId}/categorias/${categoriaId}`);
   }
 }

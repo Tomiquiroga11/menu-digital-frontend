@@ -12,4 +12,6 @@ export interface RestauranteSimple {
     horaApertura: number;
     horaCierre: number;
     telefono: string;
+    happyHourInicio: number;
+    happyHourFin: number;
   }

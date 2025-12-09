@@ -3,13 +3,13 @@ import { ProductoDto } from '../models/menu.model';
 
 @Pipe({
   name: 'filter',
-  standalone: true // ¡Importante para usarlo sin Módulos!
+  standalone: true 
 })
 export class FilterPipe implements PipeTransform {
 
   /**
-   * @param items La lista de productos a filtrar
-   * @param searchText El texto que escribió el usuario
+   * @param items 
+   * @param searchText 
    */
   transform(items: ProductoDto[], searchText: string): ProductoDto[] {
     if (!items) return [];

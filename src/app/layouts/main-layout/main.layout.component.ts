@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../services/auth.service'; // Asegúrate de que la ruta sea correcta
+import { AuthService } from '../../services/auth.service'; 
 
 @Component({
   selector: 'app-main-layout',
@@ -12,7 +12,6 @@ import { AuthService } from '../../services/auth.service'; // Asegúrate de que 
 })
 export class MainLayoutComponent {
 
-  // Inyectamos el servicio como 'public' para usarlo en el HTML
   constructor(public authService: AuthService) {}
 
   onLogout(): void {

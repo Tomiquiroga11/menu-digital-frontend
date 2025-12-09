@@ -1,0 +1,21 @@
+<div class="form-container">
+    <h2>{{ isEditMode ? 'Editar Categoría' : 'Nueva Categoría' }}</h2>
+    
+    <form [formGroup]="categoriaForm" (ngSubmit)="onSubmit()">
+        
+        <div class="form-group">
+            <label>Nombre de la Categoría:</label>
+            <input type="text" formControlName="nombre" placeholder="Ej. Bebidas, Postres, Entradas...">
+            <small *ngIf="categoriaForm.get('nombre')?.invalid && categoriaForm.get('nombre')?.touched" style="color: red;">
+                El nombre es requerido.
+            </small>
+        </div>
+
+        <div class="actions">
+            <button type="submit" [disabled]="categoriaForm.invalid || cargando" class="btn-save">
+                {{ cargando ? 'Guardando...' : (isEditMode ? 'Actualizar' : 'Crear Categoría') }}
+            </button>
+            <a routerLink="/admin/manage-categorias" class="btn-cancel">Cancelar</a>
+        </div>
+    </form>
+</div>

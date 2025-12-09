@@ -1,15 +1,13 @@
-/* IMPORTAMOS FUENTE MODERNA (Poppins) */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-/* VARIABLES DE DISEÑO (Estilo Delivery App) */
 :root {
-  --primary-color: #EA004B;      /* Rojo vibrante */
-  --primary-hover: #C90040;      /* Rojo oscuro para hover */
-  --bg-color: #F5F5F8;           /* Fondo gris muy suave */
-  --card-bg: #FFFFFF;            /* Blanco puro */
-  --text-dark: #2D3142;          /* Texto casi negro */
-  --text-gray: #9FA2B4;          /* Texto secundario */
-  --success-color: #00A650;      /* Verde */
+  --primary-color: #EA004B;      
+  --primary-hover: #C90040;      
+  --bg-color: #F5F5F8;           
+  --card-bg: #FFFFFF;           
+  --text-dark: #2D3142;         
+  --text-gray: #9FA2B4;          
+  --success-color: #00A650;      
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
@@ -17,7 +15,6 @@
   --shadow-card: 0 4px 20px rgba(0,0,0,0.08);
 }
 
-/* RESET BÁSICO */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -31,7 +28,6 @@ body {
   line-height: 1.6;
 }
 
-/* ESTILOS GLOBALES PARA FORMULARIOS (Login, Register, Admin) */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -53,7 +49,6 @@ select {
   }
 }
 
-/* BOTONES GLOBALES */
 button {
   background-color: var(--primary-color);
   color: white;
@@ -79,7 +74,6 @@ button {
   }
 }
 
-/* TÍTULOS */
 h1, h2, h3 {
   color: var(--text-dark);
   font-weight: 600;
