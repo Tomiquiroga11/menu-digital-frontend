@@ -1,0 +1,39 @@
+<section aria-labelledby="restaurants-title">
+    <h1 id="restaurants-title">Restaurantes</h1>
+
+    @if (isLoading()) {
+        <p class="status">Cargando restaurantes...</p>
+    } @else if (errorMessage()){
+        <p class="status status--error" role="alert">{{ errorMessage() }}</p>
+    }@else {
+        <ul class="restaurant-grid">
+            @for (restaurant of restaurants(); track restaurant.id) {
+                <li>
+                    <article class="restaurant-card">
+                        <h2>{{ restaurant.name }}</h2>
+                        <p class="restaurant-card__address">{{ restaurant.address }}</p>
+
+                        <p class="restaurant-card__status">
+                            <span
+                            class="badge"
+                            [class.badge--open]="restaurant.isOpen"
+                            [class.badge--closed]="!restaurant.isOpen"
+                        >   
+                            {{ restaurant.isOpen ? 'Abierto' : 'Cerrado' }}
+                            </span>
+                            <span>
+                                <time [attr.datetime]="restaurant.openingTime">{{ restaurant.openingTime.slice(0, 5) }}</time>
+                                a
+                                <time [attr.datetime]="restaurant.closingTime">{{ restaurant.closingTime.slice(0, 5) }}</time>
+                            </span>
+                        </p>
+
+                        <a class="button" [routerLink]="['/restaurants', restaurant.id]">Ver Menú</a>
+                    </article>
+                </li>
+            } @empty {
+                <li class="status">Todavia no hay restaurantes cargados.</li>
+            }
+        </ul>
+    }
+</section>
