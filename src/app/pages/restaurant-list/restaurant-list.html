@@ -6,7 +6,7 @@
     } @else if (errorMessage()){
         <p class="status status--error" role="alert">{{ errorMessage() }}</p>
     }@else {
-        <ul class="restaurant-grid">
+        <ul class="card-grid">
             @for (restaurant of restaurants(); track restaurant.id) {
                 <li>
                     <article class="restaurant-card">

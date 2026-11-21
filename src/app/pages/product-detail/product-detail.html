@@ -1,0 +1,59 @@
+@if (isLoading()) {
+  <p class="status">Cargando producto...</p>
+} @else if (errorMessage()) {
+  <p class="status status--error" role="alert">{{ errorMessage() }}</p>
+  <a routerLink="/">Volver a restaurantes</a>
+} @else {
+  @if (product(); as product) {
+    <a [routerLink]="['/restaurants', restaurantId()]" class="back-link">← Volver a {{ menu()?.name }}</a>
+
+    <article class="product-detail" [class.product-detail--featured]="product.isFeatured">
+      @if (product.imageUrl; as imageUrl) {
+        <img class="product-detail__image" [src]="imageUrl" [alt]="product.name" />
+      }
+
+      <div class="product-detail__info">
+        <p class="product-detail__category">{{ category()?.name }}</p>
+        <h1>{{ product.name }}</h1>
+
+        @if (product.isFeatured || product.discountPercentage > 0 || product.isHappyHour) {
+          <ul class="product-detail__badges" aria-label="Etiquetas del producto">
+            @if (product.isFeatured) {
+              <li class="badge badge--featured">Destacado</li>
+            }
+            @if (product.discountPercentage > 0) {
+              <li class="badge badge--discount">{{ product.discountPercentage }}% OFF</li>
+            }
+            @if (product.isHappyHour) {
+              <li class="badge badge--happy-hour">Happy hour</li>
+            }
+          </ul>
+        }
+
+        @if (product.description) {
+          <p class="product-detail__description">{{ product.description }}</p>
+        }
+
+        <p class="product-detail__price">
+          @if (product.discountPercentage > 0) {
+            <span class="visually-hidden">Precio anterior:</span>
+            <del>{{ product.price | currency: 'ARS' : 'symbol-narrow' : '1.0-2' }}</del>
+            <span class="visually-hidden">Precio actual:</span>
+          }
+          <strong>{{ product.finalPrice | currency: 'ARS' : 'symbol-narrow' : '1.0-2' }}</strong>
+        </p>
+
+        <button type="button" class="button" (click)="onAddToCart()">Agregar al carrito</button>
+
+        @if (wasAdded()) {
+          <p class="product-detail__added" role="status">
+            Agregado al carrito. <a routerLink="/cart">Ver carrito</a>
+          </p>
+        }
+      </div>
+    </article>
+  } @else {
+    <p class="status">Este producto no existe en el menú de este restaurante.</p>
+    <a [routerLink]="['/restaurants', restaurantId()]">Volver al menú</a>
+  }
+}

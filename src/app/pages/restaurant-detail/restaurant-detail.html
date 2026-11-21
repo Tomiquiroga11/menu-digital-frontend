@@ -1,0 +1,75 @@
+@if (isLoading()) {
+  <p class="status">Cargando menú...</p>
+} @else if (errorMessage()) {
+  <p class="status status--error" role="alert">{{ errorMessage() }}</p>
+  <a routerLink="/">Volver a restaurantes</a>
+} @else {
+  @if (menu(); as menu) {
+    <header class="menu-header">
+      <a routerLink="/" class="back-link">← Restaurantes</a>
+      <h1>{{ menu.name }}</h1>
+      <p class="menu-header__address">{{ menu.address }}</p>
+      <p class="menu-header__status">
+        <span class="badge" [class.badge--open]="menu.isOpen" [class.badge--closed]="!menu.isOpen">
+          {{ menu.isOpen ? 'Abierto' : 'Cerrado' }}
+        </span>
+        <span>
+          <time [attr.datetime]="menu.openingTime">{{ menu.openingTime.slice(0, 5) }}</time>
+          a
+          <time [attr.datetime]="menu.closingTime">{{ menu.closingTime.slice(0, 5) }}</time>
+        </span>
+      </p>
+    </header>
+
+    @if (menu.categories.length > 0) {
+      <nav class="category-filter" aria-label="Filtrar por categoría">
+        <button
+          type="button"
+          class="chip"
+          [class.chip--active]="selectedCategoryId() === null"
+          [attr.aria-pressed]="selectedCategoryId() === null"
+          (click)="selectCategory(null)"
+        >
+          Todas
+        </button>
+        @for (category of menu.categories; track category.id) {
+          <button
+            type="button"
+            class="chip"
+            [class.chip--active]="selectedCategoryId() === category.id"
+            [attr.aria-pressed]="selectedCategoryId() === category.id"
+            (click)="selectCategory(category.id)"
+          >
+            {{ category.name }}
+          </button>
+        }
+      </nav>
+    }
+
+    @if (selectedCategoryId() === null && featuredProducts().length > 0) {
+      <section class="menu-section" aria-labelledby="featured-title">
+        <h2 id="featured-title">Destacados</h2>
+        <ul class="card-grid">
+          @for (product of featuredProducts(); track product.id) {
+            <li><app-product-card [product]="product" (addToCart)="onAddToCart($event)"/></li>
+          }
+        </ul>
+      </section>
+    }
+
+    @for (category of visibleCategories(); track category.id) {
+      <section class="menu-section" [attr.aria-labelledby]="'category-' + category.id">
+        <h2 [id]="'category-' + category.id">{{ category.name }}</h2>
+        <ul class="card-grid">
+          @for (product of category.products; track product.id) {
+            <li><app-product-card [product]="product" (addToCart)="onAddToCart($event)"/></li>
+          } @empty {
+            <li class="status">Esta categoría todavía no tiene productos.</li>
+          }
+        </ul>
+      </section>
+    } @empty {
+      <p class="status">Este restaurante todavía no cargó su menú.</p>
+    }
+  }
+}

@@ -1,5 +1,14 @@
 <header class="site-header">
-  <a routerLink="/" class="brand">Menú Digital</a>
+  <nav class="site-nav" aria-label="Principal">
+    <a routerLink="/" class="brand">Menú Digital</a>
+    <a routerLink="/cart" class="cart-link">
+      Carrito
+      <span class="cart-count" aria-live="polite">
+        {{ cart.totalQuantity() }}
+        <span class="visually-hidden">productos</span>
+      </span>
+    </a>
+  </nav>
 </header>
 
 <main class="site-main">
