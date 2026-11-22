@@ -2,6 +2,7 @@ import { Injectable, computed, effect, signal } from '@angular/core';
 
 import { CartRestaurant, CartState } from '../models/cart';
 import { Product } from '../models/product';
+import { RestaurantMenu } from '../models/restaurant';
 
 const STORAGE_KEY = 'menu-digital-cart';
 const EMPTY_CART: CartState = { restaurant: null, items: [] };
@@ -90,4 +91,18 @@ export class CartStore {
             return EMPTY_CART;
         }
     }
+
+    syncWithMenu(menu: RestaurantMenu): void {
+        const menuProducts = menu.categories.flatMap((category) => category.products);
+
+        this.state.update((state) => ({
+            restaurant: { id: menu.id, name: menu.name, phone: menu.phone },
+            items: state.items
+                .filter((item) => menuProducts.some((product) => product.id === item.product.id))
+                .map((item) => ({
+                    ...item,
+                    product: menuProducts.find((product) => product.id === item.product.id)!,
+            })),
+    }));
+}
 }
