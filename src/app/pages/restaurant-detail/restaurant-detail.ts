@@ -6,6 +6,7 @@ import { RestaurantApi } from '../../core/services/restaurant-api';
 import { ProductCard } from '../../shared/product-card/product-card';
 import { CartStore } from '../../core/services/cart-store';
 import { Product } from '../../core/models/product';
+import { AuthStore } from '../../core/services/auth-store';
 
 @Component({
   selector: 'app-restaurant-detail',
@@ -23,6 +24,7 @@ export class RestaurantDetail implements OnInit {
   protected readonly isLoading = signal(true);
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly selectedCategoryId = signal<number | null>(null);
+  protected readonly auth = inject(AuthStore);
 
   protected readonly featuredProducts = computed(() => {
     const menu = this.menu();

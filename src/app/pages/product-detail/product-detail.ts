@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { RestaurantMenu } from '../../core/models/restaurant';
 import { CartStore } from '../../core/services/cart-store';
 import { RestaurantApi } from '../../core/services/restaurant-api';
+import { AuthStore } from '../../core/services/auth-store';
 
 @Component({
   selector: 'app-product-detail',
@@ -23,6 +24,7 @@ export class ProductDetail implements OnInit {
   protected readonly isLoading = signal(true);
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly wasAdded = signal(false);
+  protected readonly auth = inject(AuthStore);
 
   protected readonly category = computed(
     () =>

@@ -256,3 +256,67 @@ select:focus-visible {
   font-size: var(--font-size-sm);
   color: var(--color-danger);
 }
+
+/* ===== Tarjeta de formulario ===== */
+.form-card {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: var(--space-6);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.form-card--wide {
+  max-width: 40rem;
+}
+
+.form-card__intro {
+  margin: 0 0 var(--space-6);
+  color: var(--color-text-muted);
+}
+
+.form-card__submit {
+  width: 100%;
+}
+
+.form-card__footer {
+  margin: var(--space-6) 0 0;
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+fieldset {
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  border: none;
+}
+
+legend {
+  margin-bottom: var(--space-4);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.field__hint {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.owner-notice {
+  margin: 0 0 var(--space-6);
+  padding: var(--space-3) var(--space-4);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}

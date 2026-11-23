@@ -12,5 +12,6 @@ import { Product } from '../../core/models/product';
 })
 export class ProductCard {
   readonly product = input.required<Product>();
+  readonly showAddToCart = input(true);
   readonly addToCart = output<Product>();
 }

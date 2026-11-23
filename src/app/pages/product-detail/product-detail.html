@@ -43,7 +43,19 @@
           <strong>{{ product.finalPrice | currency: 'ARS' : 'symbol-narrow' : '1.0-2' }}</strong>
         </p>
 
+        @if (auth.isLoggedIn()) {
+        <p class="owner-notice" role="note">
+            Estás viendo el producto como dueño: los pedidos solo se pueden hacer sin sesión iniciada.
+        </p>
+        } @else {
         <button type="button" class="button" (click)="onAddToCart()">Agregar al carrito</button>
+
+        @if (wasAdded()) {
+            <p class="product-detail__added" role="status">
+            Agregado al carrito. <a routerLink="/cart">Ver carrito</a>
+            </p>
+          }
+        }
 
         @if (wasAdded()) {
           <p class="product-detail__added" role="status">

@@ -21,6 +21,12 @@
       </p>
     </header>
 
+    @if (auth.isLoggedIn()) {
+      <p class="owner-notice" role="note">
+        Estás viendo el menú como dueño: los pedidos solo se pueden hacer sin sesión iniciada.
+      </p>
+    }
+
     @if (menu.categories.length > 0) {
       <nav class="category-filter" aria-label="Filtrar por categoría">
         <button
@@ -51,7 +57,13 @@
         <h2 id="featured-title">Destacados</h2>
         <ul class="card-grid">
           @for (product of featuredProducts(); track product.id) {
-            <li><app-product-card [product]="product" (addToCart)="onAddToCart($event)"/></li>
+            <li>
+              <app-product-card
+                [product]="product"
+                [showAddToCart]="!auth.isLoggedIn()"
+                (addToCart)="onAddToCart($event)"
+              />
+            </li>
           }
         </ul>
       </section>
@@ -62,7 +74,13 @@
         <h2 [id]="'category-' + category.id">{{ category.name }}</h2>
         <ul class="card-grid">
           @for (product of category.products; track product.id) {
-            <li><app-product-card [product]="product" (addToCart)="onAddToCart($event)"/></li>
+            <li>
+              <app-product-card
+                [product]="product"
+                [showAddToCart]="!auth.isLoggedIn()"
+                (addToCart)="onAddToCart($event)"
+              />
+            </li>
           } @empty {
             <li class="status">Esta categoría todavía no tiene productos.</li>
           }

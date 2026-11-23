@@ -35,8 +35,10 @@
       <strong>{{ product().finalPrice | currency: 'ARS' : 'symbol-narrow' : '1.0-2' }}</strong>
     </p>
 
+    @if (showAddToCart()) {
     <button type="button" class="button" (click)="addToCart.emit(product())">
-      Agregar <span class="visually-hidden">{{ product().name }}</span> al carrito
+        Agregar <span class="visually-hidden">{{ product().name }}</span> al carrito
     </button>
+    }
   </div>
 </article>

@@ -1,0 +1,14 @@
+<section aria-labelledby="dashboard-title">
+  <h1 id="dashboard-title">Mi panel</h1>
+
+  @if (account(); as account) {
+    <p>
+      Hola, {{ account.name }}. Estás gestionando <strong>{{ account.restaurantName }}</strong>.
+    </p>
+    <a [routerLink]="['/restaurants', account.restaurantId]">Ver mi menú como lo ve un cliente</a>
+  } @else if (errorMessage()) {
+    <p class="status status--error" role="alert">{{ errorMessage() }}</p>
+  } @else {
+    <p class="status">Cargando tu cuenta...</p>
+  }
+</section>

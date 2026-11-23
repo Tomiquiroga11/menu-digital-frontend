@@ -65,3 +65,24 @@
 .site-footer p {
   margin: 0;
 }
+
+.site-nav__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav__links a {
+  font-weight: 600;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.site-nav__links a.is-active {
+  color: var(--color-primary);
+}
