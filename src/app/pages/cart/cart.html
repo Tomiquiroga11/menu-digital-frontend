@@ -1,121 +1,130 @@
 <section aria-labelledby="cart-title">
-  <h1 id="cart-title">Tu pedido</h1>
-
-  @if (cart.items().length === 0) {
-    <p class="status">Tu carrito está vacío.</p>
-    <a routerLink="/" class="button">Ver restaurantes</a>
+  @if (sentOrderUrl(); as url) {
+    <div class="order-sent" role="status">
+      <h1 id="cart-title">¡Tu pedido está listo!</h1>
+      <p>
+        Abrimos WhatsApp con tu pedido para <strong>{{ sentRestaurantName() }}</strong>.
+        Para que el local lo reciba, tocá <strong>Enviar</strong> en WhatsApp.
+      </p>
+      <p>
+        ¿No se abrió o lo cerraste sin enviarlo?
+        <a [href]="url" target="_blank" rel="noopener">Abrir WhatsApp de nuevo</a>
+      </p>
+      <a routerLink="/" class="button">Volver a restaurantes</a>
+    </div>
   } @else {
-    <div class="cart-layout">
-      <div>
-        @if (cart.restaurant(); as restaurant) {
-          <p class="cart-restaurant">
-            Pedido en <a [routerLink]="['/restaurants', restaurant.id]">{{ restaurant.name }}</a>
-          </p>
-        }
+    <h1 id="cart-title">Tu pedido</h1>
 
-        <ul class="cart-list">
-          @for (item of cart.items(); track item.product.id) {
-            <li class="cart-item">
-              <div class="cart-item__info">
-                <p class="cart-item__name">{{ item.product.name }}</p>
-                <p class="cart-item__unit-price">
-                  {{ item.product.finalPrice | currency: 'ARS' : 'symbol-narrow' : '1.0-2' }} c/u
-                </p>
-              </div>
-
-              <div class="cart-item__quantity">
-                <button
-                  type="button"
-                  class="quantity-button"
-                  [attr.aria-label]="'Quitar una unidad de ' + item.product.name"
-                  (click)="cart.decrement(item.product.id)"
-                >
-                  −
-                </button>
-                <span class="cart-item__count">
-                  <span class="visually-hidden">Cantidad:</span> {{ item.quantity }}
-                </span>
-                <button
-                  type="button"
-                  class="quantity-button"
-                  [attr.aria-label]="'Agregar una unidad de ' + item.product.name"
-                  (click)="cart.increment(item.product.id)"
-                >
-                  +
-                </button>
-              </div>
-
-              <p class="cart-item__total">
-                {{ item.product.finalPrice * item.quantity | currency: 'ARS' : 'symbol-narrow' : '1.0-2' }}
-              </p>
-
-              <button type="button" class="link-button cart-item__remove" (click)="cart.remove(item.product.id)">
-                Eliminar <span class="visually-hidden">{{ item.product.name }}</span>
-              </button>
-            </li>
-          }
-        </ul>
-      </div>
-
-      <aside class="cart-summary" aria-labelledby="summary-title">
-        <h2 id="summary-title">Resumen</h2>
-
-        <p class="cart-summary__subtotal">
-          <span>Subtotal</span>
-          <strong>{{ cart.subtotal() | currency: 'ARS' : 'symbol-narrow' : '1.0-2' }}</strong>
-        </p>
-
-        <form [formGroup]="form" (ngSubmit)="sendOrder()" novalidate>
-          <div class="field">
-            <label for="customerName">Tu nombre</label>
-            <input
-              id="customerName"
-              type="text"
-              formControlName="customerName"
-              autocomplete="name"
-              [attr.aria-invalid]="form.controls.customerName.invalid && form.controls.customerName.touched"
-              [attr.aria-describedby]="form.controls.customerName.invalid && form.controls.customerName.touched ? 'customerName-error' : null"
-            />
-            @if (form.controls.customerName.invalid && form.controls.customerName.touched) {
-              <p id="customerName-error" class="field__error">
-                Ingresá tu nombre para que el local sepa de quién es el pedido.
-              </p>
-            }
-          </div>
-
-          <div class="field">
-            <label for="notes">Comentarios (opcional)</label>
-            <textarea id="notes" formControlName="notes" rows="3" placeholder="Ej: sin cebolla, retiro en el local"></textarea>
-          </div>
-
-          @if (isCheckingStatus()) {
-            <p class="status">Verificando si el local está abierto...</p>
-          } @else if (statusError()) {
-            <p class="status status--error" role="alert">{{ statusError() }}</p>
-          } @else if (!isOpen()) {
-            <p class="cart-summary__closed" id="closed-message">
-              El local está cerrado en este momento. Horario: {{ openingHours() }}.
+    @if (cart.items().length === 0) {
+      <p class="status">Tu carrito está vacío.</p>
+      <a routerLink="/" class="button">Ver restaurantes</a>
+    } @else {
+      <div class="cart-layout">
+        <div>
+          @if (cart.restaurant(); as restaurant) {
+            <p class="cart-restaurant">
+              Pedido en <a [routerLink]="['/restaurants', restaurant.id]">{{ restaurant.name }}</a>
             </p>
           }
 
-          <button
-            type="submit"
-            class="button button--whatsapp cart-summary__send"
-            [disabled]="!isOpen()"
-            [attr.aria-describedby]="!isCheckingStatus() && !isOpen() ? 'closed-message' : null"
-          >
-            Enviar pedido por WhatsApp
-          </button>
-        </form>
+          <ul class="cart-list">
+            @for (item of cart.items(); track item.product.id) {
+              <li class="cart-item">
+                <div class="cart-item__info">
+                  <p class="cart-item__name">{{ item.product.name }}</p>
+                  <p class="cart-item__unit-price">
+                    {{ item.product.finalPrice | currency: 'ARS' : 'symbol-narrow' : '1.0-2' }} c/u
+                  </p>
+                </div>
 
-        @if (orderSent()) {
-          <p class="cart-summary__sent" role="status">
-            Abrimos WhatsApp con tu pedido. Cuando lo envíes, podés vaciar el carrito.
+                <div class="cart-item__quantity">
+                  <button
+                    type="button"
+                    class="quantity-button"
+                    [attr.aria-label]="'Quitar una unidad de ' + item.product.name"
+                    (click)="cart.decrement(item.product.id)"
+                  >
+                    −
+                  </button>
+                  <span class="cart-item__count">
+                    <span class="visually-hidden">Cantidad:</span> {{ item.quantity }}
+                  </span>
+                  <button
+                    type="button"
+                    class="quantity-button"
+                    [attr.aria-label]="'Agregar una unidad de ' + item.product.name"
+                    (click)="cart.increment(item.product.id)"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <p class="cart-item__total">
+                  {{ item.product.finalPrice * item.quantity | currency: 'ARS' : 'symbol-narrow' : '1.0-2' }}
+                </p>
+
+                <button type="button" class="link-button cart-item__remove" (click)="cart.remove(item.product.id)">
+                  Eliminar <span class="visually-hidden">{{ item.product.name }}</span>
+                </button>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <aside class="cart-summary" aria-labelledby="summary-title">
+          <h2 id="summary-title">Resumen</h2>
+
+          <p class="cart-summary__subtotal">
+            <span>Subtotal</span>
+            <strong>{{ cart.subtotal() | currency: 'ARS' : 'symbol-narrow' : '1.0-2' }}</strong>
           </p>
-        }
 
-        <button type="button" class="link-button" (click)="clearCart()">Vaciar carrito</button>
-      </aside>
-    </div>
+          <form [formGroup]="form" (ngSubmit)="sendOrder()" novalidate>
+            <div class="field">
+              <label for="customerName">Tu nombre</label>
+              <input
+                id="customerName"
+                type="text"
+                formControlName="customerName"
+                autocomplete="name"
+                [attr.aria-invalid]="form.controls.customerName.invalid && form.controls.customerName.touched"
+                [attr.aria-describedby]="form.controls.customerName.invalid && form.controls.customerName.touched ? 'customerName-error' : null"
+              />
+              @if (form.controls.customerName.invalid && form.controls.customerName.touched) {
+                <p id="customerName-error" class="field__error">
+                  Ingresá tu nombre para que el local sepa de quién es el pedido.
+                </p>
+              }
+            </div>
+
+            <div class="field">
+              <label for="notes">Comentarios (opcional)</label>
+              <textarea id="notes" formControlName="notes" rows="3" placeholder="Ej: sin cebolla, retiro en el local"></textarea>
+            </div>
+
+            @if (isCheckingStatus()) {
+              <p class="status">Verificando si el local está abierto...</p>
+            } @else if (statusError()) {
+              <p class="status status--error" role="alert">{{ statusError() }}</p>
+            } @else if (!isOpen()) {
+              <p class="cart-summary__closed" id="closed-message">
+                El local está cerrado en este momento. Horario: {{ openingHours() }}.
+              </p>
+            }
+
+            <button
+              type="submit"
+              class="button button--whatsapp cart-summary__send"
+              [disabled]="!isOpen()"
+              [attr.aria-describedby]="!isCheckingStatus() && !isOpen() ? 'closed-message' : null"
+            >
+              Enviar pedido por WhatsApp
+            </button>
+          </form>
+
+          <button type="button" class="link-button" (click)="clearCart()">Vaciar carrito</button>
+        </aside>
+      </div>
+    }
   }
 </section>

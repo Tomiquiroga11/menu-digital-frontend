@@ -21,7 +21,9 @@ export class Cart implements OnInit {
   protected readonly isOpen = signal(false);
   protected readonly openingHours = signal('');
   protected readonly statusError = signal<string | null>(null);
-  protected readonly orderSent = signal(false);
+
+  protected readonly sentOrderUrl = signal<string | null>(null);
+  protected readonly sentRestaurantName = signal('');
 
   protected readonly form = this.formBuilder.nonNullable.group({
     customerName: ['', [Validators.required, Validators.maxLength(60)]],
@@ -63,12 +65,15 @@ export class Cart implements OnInit {
     const message = this.buildMessage(restaurant.name);
     const url = `https://wa.me/${restaurant.phone}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank', 'noopener');
-    this.orderSent.set(true);
+
+    this.sentOrderUrl.set(url);
+    this.sentRestaurantName.set(restaurant.name);
+    this.cart.clear();
+    this.form.reset();
   }
 
   protected clearCart(): void {
     this.cart.clear();
-    this.orderSent.set(false);
   }
 
   private buildMessage(restaurantName: string): string {
