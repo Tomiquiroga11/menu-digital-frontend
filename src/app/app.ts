@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 import { AuthStore } from './core/services/auth-store';
@@ -13,4 +13,10 @@ import { CartStore } from './core/services/cart-store';
 export class App {
   protected readonly cart = inject(CartStore);
   protected readonly auth = inject(AuthStore);
+
+  private readonly mainContent = viewChild.required<ElementRef<HTMLElement>>('mainContent');
+
+  protected skipToContent(): void {
+    this.mainContent().nativeElement.focus();
+  }
 }

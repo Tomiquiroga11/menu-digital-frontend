@@ -1,38 +1,42 @@
+<button type="button" class="skip-link" (click)="skipToContent()">Saltar al contenido</button>
+
 <header class="site-header">
   <nav class="site-nav" aria-label="Principal">
-  <a routerLink="/" class="brand">Menú Digital</a>
+    <a routerLink="/" class="brand">Menú Digital</a>
 
-  <ul class="site-nav__links">
-  @if (!auth.isLoggedIn()) {
-    <li>
-      <a routerLink="/cart" routerLinkActive="is-active" ariaCurrentWhenActive="page" class="cart-link">
-        Carrito
-        <span class="cart-count" aria-live="polite">
-          {{ cart.totalQuantity() }}
-          <span class="visually-hidden">productos</span>
-        </span>
-      </a>
-    </li>
-  }
-  @if (auth.isLoggedIn()) {
-  <li>
-    <a
-      routerLink="/owner"
-      routerLinkActive="is-active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      ariaCurrentWhenActive="page"
-    >
-      Mi panel
-    </a>
-  </li>
-  <li><a routerLink="/owner/account" routerLinkActive="is-active" ariaCurrentWhenActive="page">Mi cuenta</a></li>
-  <li><button type="button" class="link-button" (click)="auth.logout()">Salir</button></li>
-}
-</ul>
-</nav>
+    <ul class="site-nav__links">
+      @if (!auth.isLoggedIn()) {
+        <li>
+          <a routerLink="/cart" routerLinkActive="is-active" ariaCurrentWhenActive="page" class="cart-link">
+            Carrito
+            <span class="cart-count" aria-live="polite">
+              {{ cart.totalQuantity() }}
+              <span class="visually-hidden">productos</span>
+            </span>
+          </a>
+        </li>
+      }
+      @if (auth.isLoggedIn()) {
+        <li>
+          <a
+            routerLink="/owner"
+            routerLinkActive="is-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            ariaCurrentWhenActive="page"
+          >
+            Mi panel
+          </a>
+        </li>
+        <li><a routerLink="/owner/account" routerLinkActive="is-active" ariaCurrentWhenActive="page">Mi cuenta</a></li>
+        <li><button type="button" class="link-button" (click)="auth.logout()">Salir</button></li>
+      } @else {
+        <li><a routerLink="/login" routerLinkActive="is-active" ariaCurrentWhenActive="page">Ingresar</a></li>
+      }
+    </ul>
+  </nav>
 </header>
 
-<main class="site-main">
+<main #mainContent class="site-main" tabindex="-1">
   <router-outlet />
 </main>
 
