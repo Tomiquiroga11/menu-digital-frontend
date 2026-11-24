@@ -1,14 +1,49 @@
 <section aria-labelledby="dashboard-title">
-  <h1 id="dashboard-title">Mi panel</h1>
+  <header class="dashboard-header">
+    <div>
+      <h1 id="dashboard-title">Mi panel</h1>
+      @if (menu(); as menu) {
+        <p class="dashboard-header__subtitle">
+          Hola, {{ auth.userName() }}. Estás gestionando <strong>{{ menu.name }}</strong>.
+        </p>
+      }
+    </div>
+    @if (menu(); as menu) {
+      <a class="button button--secondary" [routerLink]="['/restaurants', menu.id]">Ver mi menú</a>
+    }
+  </header>
 
-  @if (account(); as account) {
-    <p>
-      Hola, {{ account.name }}. Estás gestionando <strong>{{ account.restaurantName }}</strong>.
-    </p>
-    <a [routerLink]="['/restaurants', account.restaurantId]">Ver mi menú como lo ve un cliente</a>
+  @if (isLoading()) {
+    <p class="status">Cargando tu menú...</p>
   } @else if (errorMessage()) {
     <p class="status status--error" role="alert">{{ errorMessage() }}</p>
   } @else {
-    <p class="status">Cargando tu cuenta...</p>
+    @if (menu(); as menu) {
+      <app-category-manager [categories]="menu.categories" (changed)="loadMenu()" />
+
+      <section class="dashboard-section" aria-labelledby="products-title">
+        <div class="section-header">
+            <h2 id="products-title">Productos</h2>
+            @if (menu.categories.length > 0) {
+            <a class="button" routerLink="/owner/products/new">Nuevo producto</a>
+            }
+        </div>
+
+        @for (category of menu.categories; track category.id) {
+          <section class="owner-category" [attr.aria-labelledby]="'owner-category-' + category.id">
+            <h3 [id]="'owner-category-' + category.id">{{ category.name }}</h3>
+            <ul class="owner-product-list">
+              @for (product of category.products; track product.id) {
+                <li><app-owner-product-row [product]="product" (changed)="loadMenu()" /></li>
+              } @empty {
+                <li class="status">Todavía no hay productos en esta categoría.</li>
+              }
+            </ul>
+          </section>
+        } @empty {
+          <p class="status">Primero creá una categoría para poder cargar productos.</p>
+        }
+      </section>
+    }
   }
 </section>

@@ -320,3 +320,90 @@ legend {
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
 }
+
+/* ===== Panel del dueño ===== */
+.dashboard-section {
+  margin-bottom: var(--space-8);
+  padding: var(--space-6);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.dashboard-section h2 {
+  font-size: var(--font-size-lg);
+}
+
+.button--small {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.button--secondary {
+  border: 1px solid var(--color-primary);
+  background-color: transparent;
+  color: var(--color-primary);
+}
+
+.button--secondary:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.link-button--danger {
+  color: var(--color-danger);
+}
+
+.inline-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.inline-form .field {
+  flex: 1 1 14rem;
+  margin-bottom: 0;
+}
+
+.inline-form > input {
+  flex: 1 1 12rem;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+/* ===== Utilidades de formularios y navegación ===== */
+.back-link {
+  display: inline-block;
+  margin-bottom: var(--space-4);
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--color-primary);
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.checkbox-field input {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--color-featured);
+}

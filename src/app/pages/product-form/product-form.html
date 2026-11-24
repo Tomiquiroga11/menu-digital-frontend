@@ -1,0 +1,106 @@
+<section class="form-card form-card--wide" aria-labelledby="product-form-title">
+  <a routerLink="/owner" class="back-link">← Volver al panel</a>
+  <h1 id="product-form-title">{{ editingId() === null ? 'Nuevo producto' : 'Editar producto' }}</h1>
+
+  @if (isLoading()) {
+    <p class="status">Cargando...</p>
+  } @else if (loadError()) {
+    <p class="status status--error" role="alert">{{ loadError() }}</p>
+  } @else if (categories().length === 0) {
+    <p class="status">
+      Para cargar productos primero necesitás crear al menos una categoría.
+      <a routerLink="/owner">Ir al panel</a>
+    </p>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="field">
+        <label for="name">Nombre</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          [attr.aria-invalid]="hasError('name')"
+          [attr.aria-describedby]="hasError('name') ? 'name-error' : null"
+        />
+        @if (hasError('name')) {
+          <p id="name-error" class="field__error">Ingresá un nombre de hasta 100 caracteres.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="description">Descripción</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          rows="3"
+          [attr.aria-invalid]="hasError('description')"
+          [attr.aria-describedby]="hasError('description') ? 'description-hint description-error' : 'description-hint'"
+        ></textarea>
+        <p id="description-hint" class="field__hint">Opcional. Hasta 500 caracteres.</p>
+        @if (hasError('description')) {
+          <p id="description-error" class="field__error">La descripción no puede superar los 500 caracteres.</p>
+        }
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="price">Precio ($)</label>
+          <input
+            id="price"
+            type="number"
+            inputmode="decimal"
+            min="0.01"
+            step="0.01"
+            formControlName="price"
+            [attr.aria-invalid]="hasError('price')"
+            [attr.aria-describedby]="hasError('price') ? 'price-error' : null"
+          />
+          @if (hasError('price')) {
+            <p id="price-error" class="field__error">Ingresá un precio mayor a 0.</p>
+          }
+        </div>
+
+        <div class="field">
+          <label for="categoryId">Categoría</label>
+          <select id="categoryId" formControlName="categoryId">
+            @for (category of categories(); track category.id) {
+              <option [ngValue]="category.id">{{ category.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="imageUrl">URL de la imagen</label>
+        <input
+          id="imageUrl"
+          type="url"
+          formControlName="imageUrl"
+          placeholder="https://..."
+          [attr.aria-invalid]="hasError('imageUrl')"
+          [attr.aria-describedby]="hasError('imageUrl') ? 'imageUrl-hint imageUrl-error' : 'imageUrl-hint'"
+        />
+        <p id="imageUrl-hint" class="field__hint">Opcional. Pegá el link de una foto publicada en internet.</p>
+        @if (hasError('imageUrl')) {
+          <p id="imageUrl-error" class="field__error">La URL tiene que empezar con http:// o https://</p>
+        }
+      </div>
+
+      <label class="checkbox-field">
+        <input type="checkbox" formControlName="isFeatured" />
+        Mostrar como destacado
+      </label>
+
+      @if (errorMessage()) {
+        <p class="status status--error" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <div class="form-actions">
+        <a routerLink="/owner" class="button button--secondary">Cancelar</a>
+        <button type="submit" class="button" [disabled]="isSubmitting()">
+          {{ isSubmitting() ? 'Guardando...' : 'Guardar producto' }}
+        </button>
+      </div>
+    </form>
+  }
+</section>

@@ -1,0 +1,59 @@
+<article class="owner-product">
+  <div class="owner-product__info">
+    <h4 class="owner-product__name">{{ product().name }}</h4>
+    <p class="owner-product__price">
+      @if (product().discountPercentage > 0) {
+        <span class="visually-hidden">Precio anterior:</span>
+        <del>{{ product().price | currency: 'ARS' : 'symbol-narrow' : '1.0-2' }}</del>
+        <span class="visually-hidden">Precio actual:</span>
+      }
+      <strong>{{ product().finalPrice | currency: 'ARS' : 'symbol-narrow' : '1.0-2' }}</strong>
+      @if (product().isFeatured) {
+        <span class="badge badge--featured">Destacado</span>
+      }
+    </p>
+  </div>
+
+  <div class="owner-product__controls">
+    <form class="owner-product__discount" [formGroup]="discountForm" (ngSubmit)="applyDiscount()" novalidate>
+      <label [for]="'discount-' + product().id">Descuento %</label>
+      <input
+        [id]="'discount-' + product().id"
+        type="number"
+        min="0"
+        max="100"
+        step="1"
+        formControlName="discountPercentage"
+        [attr.aria-invalid]="discountForm.invalid && discountForm.touched"
+      />
+      <button type="submit" class="button button--small" [disabled]="isSaving()">
+        Aplicar <span class="visually-hidden">descuento a {{ product().name }}</span>
+      </button>
+    </form>
+
+    <label class="toggle">
+      <input
+        type="checkbox"
+        [checked]="product().isHappyHour"
+        [disabled]="isSaving()"
+        (change)="toggleHappyHour($event)"
+      />
+      Happy hour <span class="visually-hidden">para {{ product().name }}</span>
+    </label>
+
+    <a class="link-button" [routerLink]="['/owner/products', product().id, 'edit']">
+      Editar <span class="visually-hidden">{{ product().name }}</span>
+    </a>
+
+    <button type="button" class="link-button link-button--danger" [disabled]="isSaving()" (click)="remove()">
+      Eliminar <span class="visually-hidden">{{ product().name }}</span>
+    </button>
+  </div>
+
+  @if (discountForm.invalid && discountForm.touched) {
+    <p class="field__error owner-product__message">El descuento tiene que ser un número entero entre 0 y 100.</p>
+  }
+  @if (errorMessage()) {
+    <p class="status status--error owner-product__message" role="alert">{{ errorMessage() }}</p>
+  }
+</article>

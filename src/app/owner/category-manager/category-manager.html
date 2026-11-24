@@ -1,0 +1,59 @@
+<section class="dashboard-section" aria-labelledby="categories-title">
+  <h2 id="categories-title">Categorías</h2>
+
+  <form class="inline-form" [formGroup]="createForm" (ngSubmit)="create()" novalidate>
+    <div class="field">
+      <label for="newCategory">Nueva categoría</label>
+      <input
+        id="newCategory"
+        type="text"
+        formControlName="name"
+        placeholder="Ej: Bebidas"
+        [attr.aria-invalid]="createForm.controls.name.invalid && createForm.controls.name.touched"
+        [attr.aria-describedby]="createForm.controls.name.invalid && createForm.controls.name.touched ? 'newCategory-error' : null"
+      />
+    </div>
+    <button type="submit" class="button" [disabled]="isSaving()">Agregar</button>
+  </form>
+  @if (createForm.controls.name.invalid && createForm.controls.name.touched) {
+    <p id="newCategory-error" class="field__error">Ingresá un nombre de hasta 50 caracteres.</p>
+  }
+
+  @if (errorMessage()) {
+    <p class="status status--error" role="alert">{{ errorMessage() }}</p>
+  }
+
+  <ul class="category-list">
+    @for (category of categories(); track category.id) {
+      <li class="category-list__item">
+        @if (editingId() === category.id) {
+          <form class="inline-form category-list__edit" [formGroup]="editForm" (ngSubmit)="saveEdit(category.id)" novalidate>
+            <label [for]="'edit-category-' + category.id" class="visually-hidden">
+              Nuevo nombre para {{ category.name }}
+            </label>
+            <input [id]="'edit-category-' + category.id" type="text" formControlName="name" />
+            <button type="submit" class="button button--small" [disabled]="isSaving()">Guardar</button>
+            <button type="button" class="link-button" (click)="cancelEditing()">Cancelar</button>
+          </form>
+        } @else {
+          <p class="category-list__name">
+            {{ category.name }}
+            <span class="category-list__count">
+              {{ category.products.length }} {{ category.products.length === 1 ? 'producto' : 'productos' }}
+            </span>
+          </p>
+          <div class="category-list__actions">
+            <button type="button" class="link-button" (click)="startEditing(category)">
+              Editar <span class="visually-hidden">{{ category.name }}</span>
+            </button>
+            <button type="button" class="link-button link-button--danger" (click)="remove(category)">
+              Eliminar <span class="visually-hidden">{{ category.name }}</span>
+            </button>
+          </div>
+        }
+      </li>
+    } @empty {
+      <li class="status category-list__empty">Todavía no creaste categorías.</li>
+    }
+  </ul>
+</section>
