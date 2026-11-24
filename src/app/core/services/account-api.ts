@@ -3,7 +3,7 @@ import { Injectable, inject } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { environment } from "../../../environments/environment";
-import { Account, UpdateAccountRequest } from "../models/account";
+import { Account, ChangeEmailRequest, ChangePasswordRequest, UpdateAccountRequest } from '../models/account';
 
 @Injectable({ providedIn: 'root'})
 export class AccountApi {
@@ -16,6 +16,14 @@ export class AccountApi {
 
     update(request: UpdateAccountRequest): Observable<Account> {
         return this.http.put<Account>(this.baseUrl, request);
+    }
+
+    changePassword(request: ChangePasswordRequest): Observable<void> {
+        return this.http.put<void>(`${this.baseUrl}/password`, request);
+    }
+
+        changeEmail(request: ChangeEmailRequest): Observable<void> {
+        return this.http.put<void>(`${this.baseUrl}/email`, request);
     }
 
     delete(): Observable<void> {

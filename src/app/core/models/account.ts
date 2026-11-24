@@ -18,3 +18,13 @@ export interface UpdateAccountRequest {
     openingTime: string;
     closingTime: string;
 }
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface ChangeEmailRequest {
+  newEmail: string;
+  currentPassword: string;
+}

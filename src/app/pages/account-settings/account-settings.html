@@ -1,0 +1,192 @@
+<div class="account-page">
+  <a routerLink="/owner" class="back-link">← Volver al panel</a>
+  <h1>Mi cuenta</h1>
+
+  @if (isLoading()) {
+    <p class="status">Cargando tu cuenta...</p>
+  } @else if (loadError()) {
+    <p class="status status--error" role="alert">{{ loadError() }}</p>
+  } @else {
+    @if (account(); as account) {
+      <div class="form-card form-card--wide">
+        <section class="account-section" aria-labelledby="access-title">
+          <h2 id="access-title">Acceso</h2>
+
+          <div class="credential-row">
+            <div>
+              <p class="credential-row__label">Email</p>
+              <p class="credential-row__value">{{ account.email }}</p>
+            </div>
+            <button
+              type="button"
+              class="link-button"
+              aria-controls="change-email-panel"
+              [attr.aria-expanded]="editingCredential() === 'email'"
+              (click)="toggleCredential('email')"
+            >
+              {{ editingCredential() === 'email' ? 'Cancelar' : 'Cambiar' }}
+              <span class="visually-hidden">email</span>
+            </button>
+          </div>
+          @if (editingCredential() === 'email') {
+            <div id="change-email-panel" class="credential-panel">
+              <app-change-email-form [currentEmail]="account.email" (emailChanged)="onEmailChanged($event)" />
+            </div>
+          }
+
+          <div class="credential-row">
+            <div>
+              <p class="credential-row__label">Contraseña</p>
+              <p class="credential-row__value">
+                <span aria-hidden="true">••••••••</span>
+                <span class="visually-hidden">Oculta</span>
+              </p>
+            </div>
+            <button
+              type="button"
+              class="link-button"
+              aria-controls="change-password-panel"
+              [attr.aria-expanded]="editingCredential() === 'password'"
+              (click)="toggleCredential('password')"
+            >
+              {{ editingCredential() === 'password' ? 'Cancelar' : 'Cambiar' }}
+              <span class="visually-hidden">contraseña</span>
+            </button>
+          </div>
+          @if (editingCredential() === 'password') {
+            <div id="change-password-panel" class="credential-panel">
+              <app-change-password-form (passwordChanged)="onPasswordChanged()" />
+            </div>
+          }
+
+          @if (credentialMessage()) {
+            <p class="status status--success credential-message" role="status">{{ credentialMessage() }}</p>
+          }
+        </section>
+
+        <form class="account-section" [formGroup]="form" (ngSubmit)="save()" novalidate>
+          <fieldset>
+            <legend>Tus datos</legend>
+
+            <div class="field">
+              <label for="name">Nombre</label>
+              <input
+                id="name"
+                type="text"
+                formControlName="name"
+                autocomplete="name"
+                [attr.aria-invalid]="hasError('name')"
+                [attr.aria-describedby]="hasError('name') ? 'name-error' : null"
+              />
+              @if (hasError('name')) {
+                <p id="name-error" class="field__error">Ingresá tu nombre.</p>
+              }
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Tu restaurante</legend>
+
+            <div class="field">
+              <label for="restaurantName">Nombre del restaurante</label>
+              <input
+                id="restaurantName"
+                type="text"
+                formControlName="restaurantName"
+                [attr.aria-invalid]="hasError('restaurantName')"
+                [attr.aria-describedby]="hasError('restaurantName') ? 'restaurantName-error' : null"
+              />
+              @if (hasError('restaurantName')) {
+                <p id="restaurantName-error" class="field__error">Ingresá el nombre del restaurante.</p>
+              }
+            </div>
+
+            <div class="field">
+              <label for="address">Dirección</label>
+              <input
+                id="address"
+                type="text"
+                formControlName="address"
+                autocomplete="street-address"
+                [attr.aria-invalid]="hasError('address')"
+                [attr.aria-describedby]="hasError('address') ? 'address-error' : null"
+              />
+              @if (hasError('address')) {
+                <p id="address-error" class="field__error">Ingresá la dirección.</p>
+              }
+            </div>
+
+            <div class="field">
+              <label for="phone">Teléfono de WhatsApp</label>
+              <input
+                id="phone"
+                type="tel"
+                inputmode="numeric"
+                formControlName="phone"
+                autocomplete="tel"
+                [attr.aria-invalid]="hasError('phone')"
+                [attr.aria-describedby]="hasError('phone') ? 'phone-hint phone-error' : 'phone-hint'"
+              />
+              <p id="phone-hint" class="field__hint">Con código de país, solo números. Ej: 5493511234567</p>
+              @if (hasError('phone')) {
+                <p id="phone-error" class="field__error">El teléfono tiene que tener entre 10 y 15 dígitos, sin espacios ni símbolos.</p>
+              }
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="openingTime">Abre a las</label>
+                <input id="openingTime" type="time" formControlName="openingTime" [attr.aria-invalid]="hasError('openingTime')" />
+              </div>
+              <div class="field">
+                <label for="closingTime">Cierra a las</label>
+                <input id="closingTime" type="time" formControlName="closingTime" [attr.aria-invalid]="hasError('closingTime')" />
+              </div>
+            </div>
+          </fieldset>
+
+          @if (saveError()) {
+            <p class="status status--error" role="alert">{{ saveError() }}</p>
+          }
+          @if (saveMessage()) {
+            <p class="status status--success" role="status">{{ saveMessage() }}</p>
+          }
+
+          <div class="form-actions">
+            <button type="submit" class="button" [disabled]="isSaving()">
+              {{ isSaving() ? 'Guardando...' : 'Guardar cambios' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <section class="danger-zone" aria-labelledby="delete-title">
+        <h2 id="delete-title">Eliminar cuenta</h2>
+        <p>
+          Se van a borrar tu cuenta, tu restaurante y todo su menú: categorías y productos.
+          <strong>Esta acción no se puede deshacer.</strong>
+        </p>
+
+        <div class="field">
+          <label for="deleteConfirmation">
+            Para confirmar, escribí el nombre de tu restaurante: <strong>{{ account.restaurantName }}</strong>
+          </label>
+          <input id="deleteConfirmation" type="text" autocomplete="off" (input)="onDeleteConfirmationInput($event)" />
+        </div>
+
+        @if (deleteError()) {
+          <p class="status status--error" role="alert">{{ deleteError() }}</p>
+        }
+
+        <button
+          type="button"
+          class="button button--danger"
+          [disabled]="!canDelete() || isDeleting()"
+          (click)="deleteAccount()"
+        >
+          {{ isDeleting() ? 'Eliminando...' : 'Eliminar mi cuenta' }}
+        </button>
+      </section>
+    }
+  }
+</div>

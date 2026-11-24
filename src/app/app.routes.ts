@@ -10,6 +10,7 @@ import { Register } from './pages/register/register';
 import { RestaurantDetail } from './pages/restaurant-detail/restaurant-detail';
 import { RestaurantList } from './pages/restaurant-list/restaurant-list';
 import { ProductForm } from './pages/product-form/product-form';
+import { AccountSettings } from './pages/account-settings/account-settings';
 
 export const routes: Routes = [
   // Públicas: invitados y dueños
@@ -38,13 +39,19 @@ export const routes: Routes = [
   component: ProductForm,
   canActivate: [authGuard],
   title: 'Nuevo producto | Menú Digital',
-},
-{
+  },
+  {
   path: 'owner/products/:productId/edit',
   component: ProductForm,
   canActivate: [authGuard],
   title: 'Editar producto | Menú Digital',
-},
+  },
+  {
+  path: 'owner/account',
+  component: AccountSettings,
+  canActivate: [authGuard],
+  title: 'Mi cuenta | Menú Digital',
+  },
 
   // Cualquier otra URL vuelve al inicio (siempre al final)
   { path: '**', redirectTo: '' },

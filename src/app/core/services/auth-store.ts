@@ -26,9 +26,17 @@ export class AuthStore {
         this.session.set(response);
     }
 
-    logout(): void {
+    updateName(name: string): void {
+        this.session.update((session) => (session ? { ...session, name } : session));
+    }
+
+    updateEmail(email: string): void {
+        this.session.update((session) => (session ? { ...session, email } : session));
+    }
+
+    logout(redirectTo = '/login'): void {
         this.session.set(null);
-        this.router.navigateByUrl('/login');
+        this.router.navigateByUrl(redirectTo);
     }
 
     private loadFromStorage():  AuthResponse | null {
